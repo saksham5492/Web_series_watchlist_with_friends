@@ -1,0 +1,244 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+
+/* ===== GLOBAL RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  padding: 10px 25px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  width: 40px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: red;
+  text-shadow: 0 0 10px red;
+}
+
+select {
+  background-color: #111;
+  border: 1px solid red;
+  color: white;
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+select:hover {
+  box-shadow: 0 0 10px red;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-container input {
+  background-color: #111;
+  border: 1px solid red;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  width: 160px;
+  transition: width 0.4s ease-in-out, box-shadow 0.3s;
+}
+
+.search-container input:focus {
+  width: 240px;
+  box-shadow: 0 0 10px red;
+  outline: none;
+}
+
+.search-container button {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-container button:hover {
+  background-color: white;
+  color: red;
+  border: 1px solid red;
+}
+
+.user-icon {
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.user-icon:hover {
+  color: red;
+  text-shadow: 0 0 10px red;
+}
+
+/* ===== MOBILE MENU ===== */
+.menu-toggle {
+  display: none;
+  font-size: 25px;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 850px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #111;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    gap: 15px;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .search-container input {
+    width: 130px;
+  }
+}
+
+/* ===== CONTENT SECTION ===== */
+.content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 25px;
+  padding: 40px 60px;
+  justify-items: center;
+}
+
+/* ===== NETFLIX-STYLE CARD ===== */
+.netflix-card {
+  position: relative;
+  width: 180px;
+  height: 270px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  background: #111;
+}
+
+.netflix-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* Hover zoom effect */
+.netflix-card:hover {
+  transform: scale(1.08);
+  z-index: 2;
+}
+
+.netflix-card:hover img {
+  transform: scale(1.1);
+  filter: brightness(0.6);
+}
+
+/* ===== CARD INFO ===== */
+.card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(30%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.netflix-card:hover .card-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== CARD TEXT ===== */
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.meta {
+  font-size: 0.8rem;
+  color: #ffcc00;
+}
+
+/* ===== RESPONSIVE TWEAKS ===== */
+@media (max-width: 600px) {
+  .content {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .netflix-card {
+    width: 150px;
+    height: 220px;
+  }
+
+  .title {
+    font-size: 0.9rem;
+  }
+
+  .meta {
+    font-size: 0.7rem;
+  }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BingeSync | Home</title>
+  <link rel="shortcut icon" href="./Images/Logo/Title.jpeg" type="image/x-icon" />
+
+  <!-- Font & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Combined CSS -->
+  <link rel="stylesheet" href="/css/home.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="nav-left">
+      <img src="/css/logo.jpg" alt="logo" class="logo" onclick="window.location.href='/'">
+    </div>
+
+    <i class="fa-solid fa-bars menu-toggle" id="menuToggle"></i>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#">Home</a>
+      <a href="#">Web Series</a>
+      <a href="#">Premium</a>
+      <a href="#">Contact Us</a>
+
+      <select id="genreSelect" onchange="goToGenrePage(this)">
+        <option value="" disabled selected>Genres</option>
+        <option value="#">Popular</option>
+        <option value="#">Crime</option>
+        <option value="#">Thriller</option>
+        <option value="#">Action</option>
+        <option value="#">Comedy</option>
+        <option value="#">Romance</option>
+      </select>
+    </div>
+
+    <div class="search-container">
+      <input type="text" id="searchText" placeholder="Search" />
+      <button>Search</button>
+      <i class="fa-solid fa-circle-user user-icon"></i>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="content">
+    <% for (let result of results) { %>
+      <div class="netflix-card">
+        <img src="<%= result.poster_url  %>" alt="<%= result.title %>">
+        <div class="card-info">
+          <h3 class="title"><%= result.title %></h3>
+          <p class="meta">⭐ <%= result.rating || '9.2' %> | <%= result.genre || 'Crime, Drama' %></p>
+        </div>
+      </div>
+    <% } %>
+
+  </div>
+
+  <script>
+    function goToGenrePage(select) {
+      const value = select.value;
+      if (value) window.location.href = value;
+    }
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+  </script>
+</body>
+</html>
