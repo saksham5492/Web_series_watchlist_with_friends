@@ -16,10 +16,26 @@
 </head>
 
 <body>
+
+  <% if (message) { %>
+  <div class="verification-message" id="loginMsg">
+    <%= message %>
+  </div>
+  <% } %>
+
+  <script>
+    const msg = document.getElementById("loginMsg");
+    if (msg) {
+      setTimeout(() => {
+        msg.remove();
+      }, 4000);
+    }
+  </script>
+
   <!-- Navbar -->
   <nav>
     <div class="nav-left">
-      <img src="/css/logo.jpg" alt="logo" class="logo" onclick="window.location.href='/'">
+      <img src="/css/binge.jpg" alt="logo" class="logo" onclick="window.location.href='/'">
     </div>
 
     <i class="fa-solid fa-bars menu-toggle" id="menuToggle"></i>
@@ -47,113 +63,54 @@
       <i class="fa-solid fa-circle-user user-icon"></i>
     </div>
   </nav>
-  
-
 
   <!-- Sidebar Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-content">
-    <button class="close-btn" id="closeSidebar">&times;</button>
-
-    <div class="sidebar-header">
-      <img
-        src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
-        alt="User"
-        class="sidebar-avatar"
-      />
-      <h3 class="sidebar-name">John Doe</h3>
-    </div>
-
-    <hr class="sidebar-line" />
-
-    <div class="sidebar-menu">
-      <p>👤 My Account</p>
-      <p>🎫 Requests</p>
-      <p>➡ Sign Out</p>
-    </div>
-  </div>
-</div>
-
+  <!-- Sidebar (included partial) -->
+  <%- include('../include/sidebar', { user: user }) %>
 
   <!-- Page Content -->
   <div class="content">
     <% for (let result of results) { %>
       <div class="netflix-card">
-        <img src="<%= result.poster_url  %>" alt="<%= result.title %>">
+        <img src="<%= result.poster_url %>" alt="<%= result.title %>">
         <div class="card-info">
           <h3 class="title"><%= result.title %></h3>
-          <p class="meta">⭐ <%= result.series_rating || '9.2' %> | <%= result.genre_name || 'Crime, Drama' %></p>
+          <p class="meta">
+            ⭐ <%= result.series_rating || '9.2' %> | <%= result.genre_name || 'Crime, Drama' %>
+          </p>
         </div>
       </div>
     <% } %>
-
-   
-
-
   </div>
 
   <script>
-    function goToGenrePage(select) {
-      const value = select.value;
-      if (value) window.location.href = value;
-    }
-
+    // Navbar toggle for small screens
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
     menuToggle.addEventListener("click", () => {
       navLinks.classList.toggle("active");
     });
 
-    //search bar working
-  const searchInput = document.getElementById("searchText");
-  const movieCards = document.querySelectorAll(".netflix-card");
+    // Genre dropdown navigation
+    function goToGenrePage(select) {
+      const value = select.value;
+      if (value) window.location.href = value;
+    }
 
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-   
-    movieCards.forEach(card => {
-      const title = card.querySelector(".title").textContent.toLowerCase();
-      if (title.includes(query)) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
+    // Search functionality
+    const searchInput = document.getElementById("searchText");
+    const movieCards = document.querySelectorAll(".netflix-card");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      movieCards.forEach(card => {
+        const title = card.querySelector(".title").textContent.toLowerCase();
+        card.style.display = title.includes(query) ? "block" : "none";
+      });
     });
-  });
-
-  
-   
- 
-  const userIcon = document.querySelector(".user-icon");
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  const closeSidebar = document.getElementById("closeSidebar");
-
-  // Open sidebar
-  userIcon.addEventListener("click", () => {
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
-    document.body.style.overflow = "hidden"; // disable scroll
-  });
-
-  // Close sidebar
-  function closeSidebarMenu() {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-    document.body.style.overflow = "auto"; // enable scroll
-  }
-
-  closeSidebar.addEventListener("click", closeSidebarMenu);
-  overlay.addEventListener("click", closeSidebarMenu);
-
-
-
-
-  
-  
   </script>
+
 </body>
 </html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify OTP</title>
+  <link rel="stylesheet" href="/css/verify-otp.css" />
+</head>
+<body>
+  <h2>Verify Email for <%= email %></h2>
+  <form action="/verify-otp" method="POST">
+    <input type="hidden" name="email" value="<%= email %>">
+    <label>Enter OTP:</label>
+    <input type="text" name="otp" required maxlength="6">
+    <button type="submit">Verify</button>
+  </form>
+</body>
+</html>

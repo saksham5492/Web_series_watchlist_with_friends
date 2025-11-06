@@ -258,3 +258,25 @@ select:hover {
     font-size: 0.75rem;
   }
 }
+
+.verification-message {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #4caf50;
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: fadeInOut 4s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}

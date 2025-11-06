@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* --- Body and Background Styling --- */
+
+body {
+  display: flex;
+  flex-direction: column; /* Added to stack h2 and form vertically */
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0 10px;
+  position: relative;
+  overflow: hidden;
+  color: #fff; /* Default text color set to white */
+  text-align: center; /* Center the h2 text */
+}
+
+/* Background image and overlay */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("https://images.unsplash.com/photo-1675295275119-b3ffe5448c9c?ixlib=rb-4.1.0&auto=format&fit=crop&w=1026&q=80")
+    no-repeat center;
+  background-position: center 35%;
+  background-size: cover;
+  z-index: -1;
+  filter: brightness(0.65);
+}
+
+/* --- Form Container (Simulated Wrapper Effect) --- */
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Take full width of its container (max-width below) */
+  max-width: 400px; /* Limits the form width */
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1;
+  margin-top: 20px; /* Space between h2 and form */
+}
+
+/* --- Heading Styling --- */
+
+h2 {
+  font-size: 1.5rem;
+  color: #fff;
+  z-index: 1; /* Ensure the heading is above the background filter */
+}
+
+/* --- Input and Label Styling (Simplified) --- */
+
+label {
+  display: block; /* Make label take up full width */
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #ddd;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 20px; /* Slightly larger font for OTP */
+  color: #fff;
+  text-align: center; /* Center the OTP input text */
+  padding: 0 10px;
+  border-bottom: 2px solid #ccc; /* Mimic the input-field underline */
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #fff;
+}
+
+/* --- Button Styling --- */
+
+button {
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+  margin-top: 25px;
+}
+
+button:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
