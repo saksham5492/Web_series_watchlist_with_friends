@@ -73,15 +73,14 @@
   <!-- Page Content -->
   <div class="content">
     <% for (let result of results) { %>
-      <div class="netflix-card">
-        <img src="<%= result.poster_url %>" alt="<%= result.title %>">
-        <div class="card-info">
-          <h3 class="title"><%= result.title %></h3>
-          <p class="meta">
-            ⭐ <%= result.series_rating || '9.2' %> | <%= result.genre_name || 'Crime, Drama' %>
-          </p>
-        </div>
-      </div>
+      <div class="netflix-card" onclick="window.location.href='/watchlist/series/<%= result.series_id %>'">
+  <img src="<%= result.poster_url %>" alt="<%= result.title %>">
+  <div class="card-info">
+    <h3 class="title"><%= result.title %></h3>
+    <p class="meta">⭐ <%= result.series_rating || '9.2' %> | <%= result.genre_name || 'Drama' %></p>
+  </div>
+</div>
+
     <% } %>
   </div>
 

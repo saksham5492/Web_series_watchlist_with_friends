@@ -256,6 +256,62 @@ app.use((err, req, res, next) => {
   res.status(statusCode).send(message);
 });
 
+
+// ---------------------------------------------------------
+// SERIES DETAIL PAGE
+// ---------------------------------------------------------
+app.get('/watchlist/series/:id', (req, res) => {
+  const seriesId = req.params.id;
+
+  const q1 = `
+    SELECT s.series_id, s.title, s.release_year, s.summary, s.platform, 
+           s.poster_url, s.series_rating, s.trailer_url, g.genre_name
+    FROM series s
+    JOIN series_genres sg ON s.series_id = sg.series_id
+    JOIN genres g ON sg.genre_id = g.genre_id
+    WHERE s.series_id = ?
+  `;
+
+  const q2 = `
+  SELECT 
+    s.series_id AS id,
+    s.title,
+    s.poster_url,
+    s.series_rating,
+    GROUP_CONCAT(g.genre_name SEPARATOR ', ') AS genre_name
+  FROM series s
+  JOIN series_genres sg ON s.series_id = sg.series_id
+  JOIN genres g ON sg.genre_id = g.genre_id
+  GROUP BY s.series_id
+  ORDER BY RAND()
+  LIMIT 6;`;
+
+    
+  
+
+  connection.query(q1, [seriesId], (err, result) => {
+    if (err || result.length === 0) {
+      console.error(err);
+      return res.status(404).send("Series not found");
+    }
+
+    connection.query(q2, [seriesId], (err2, recommended) => {
+      if (err2) {
+        console.error(err2);
+        return res.status(500).send("Error fetching recommendations");
+      }
+
+      res.render("pages/series", {
+        series: result[0],
+        recommended,
+        user: req.session.user || null
+      });
+    });
+  });
+});
+
+
+ 
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
