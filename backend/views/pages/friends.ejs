@@ -3,43 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Friends | BingeSync</title>
+  <title>Find Friends | BingeSync</title>
   <link rel="stylesheet" href="/css/friends.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
+
 <body>
-  <div class="friends-page">
+  <div class="find-page">
     <section class="hero">
       <div class="overlay"></div>
-      <img src="https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=1200&q=80" class="bg-image" alt="Friends" />
+      <img src="https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=1400&q=80" class="bg-image" alt="Find Friends" />
       <div class="hero-content">
-        <h1>👥 Your Binge Buddies</h1>
-        <p>Connect, share watchlists, and discover together.</p>
+        <h1>🎥 Find New Friends</h1>
+        <p>Connect with others and share your binge lists!</p>
       </div>
     </section>
 
-    <section class="friends-section">
-      <h2>Friends List</h2>
+    <section class="friends-list">
+      <h2>All Users</h2>
 
-      <% if (friends.length === 0) { %>
-        <p class="empty">You have no friends yet 😢<br>Send requests to connect!</p>
+      <% if (users.length === 0) { %>
+        <p class="empty">No users found 😅</p>
       <% } else { %>
         <div class="friends-grid">
-          <% friends.forEach(friend => { %>
+          <% users.forEach(user => { %>
             <div class="friend-card">
               <div class="avatar">
-                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=<%= friend.username %>" alt="<%= friend.username %>" />
+                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=<%= user.name %>" alt="<%= user.name %>">
               </div>
               <div class="friend-info">
-                <h3><%= friend.username %></h3>
-                <p><%= friend.email %></p>
+                <h3><%= user.name %></h3>
+                <p><%= user.email %></p>
               </div>
               <div class="actions">
-                <a href="/friends/watchlist/<%= friend.id %>" class="btn view-btn">
-                  <i class="fa-solid fa-tv"></i> View Watchlist
-                </a>
-                <button class="btn remove-btn" onclick="removeFriend('<%= friend.id %>')">
-                  <i class="fa-solid fa-user-xmark"></i> Remove
+                <button class="btn add-btn" onclick="sendRequest('<%= user.id %>', this)">
+                  <i class="fa-solid fa-user-plus"></i> Add Friend
                 </button>
               </div>
             </div>
@@ -49,16 +47,24 @@
     </section>
   </div>
 
-  <div id="toast" class="toast">Friend removed successfully ✅</div>
+  <div id="toast" class="toast">Request Sent</div>
 
   <script>
-    async function removeFriend(friendId) {
-      const res = await fetch(`/friends/remove/${friendId}`, { method: 'DELETE' });
-      if (res.ok) {
-        document.querySelector(`[onclick="removeFriend('${friendId}')"]`).closest('.friend-card').remove();
-        showToast('👋 Friend removed');
+    async function sendRequest(receiverId, btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> Sending...';
+
+      const res = await fetch(`/friends/request/${receiverId}`, { method: 'POST' });
+      const data = await res.json();
+
+      if (data.success) {
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Request Sent';
+        btn.classList.add('sent');
+        showToast('✅ Friend request sent!');
       } else {
-        showToast('❌ Could not remove friend');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Add Friend';
+        showToast('❌ Error sending request');
       }
     }
 

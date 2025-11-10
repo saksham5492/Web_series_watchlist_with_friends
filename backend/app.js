@@ -356,7 +356,7 @@ app.delete('/watchlist/delete/:seriesId', (req, res) => {
 // ---------------------------------------------------------
 
 // ✅ View all users (to send friend requests)
-app.get('watchlist/friends', (req, res) => {
+app.get('/watchlist/friends', (req, res) => {
   if (!req.session.user) return res.redirect('/watchlist/login');
   const currentUserId = req.session.user.id;
 
