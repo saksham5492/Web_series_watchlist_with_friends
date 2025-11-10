@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= friend.name %>'s Watchlist</title>
+  <link rel="stylesheet" href="/css/friend-watchlist.css" />
+</head>
+<body>
+ 
+
+  <!-- ===== HEADER ===== -->
+  <header class="friend-header">
+    <h1><%= friend.name %>’s Watchlist</h1>
+    <a href="/watchlist">← Back to My Watchlist</a>
+  </header>
+
+  <!-- ===== WATCHLIST SECTION ===== -->
+  <section class="friend-watchlist">
+    <% if (watchlist && watchlist.length > 0) { %>
+      <div class="watchlist-grid">
+        <% watchlist.forEach(item => { %>
+          <div class="card">
+            <img src="<%= item.poster_url %>" alt="<%= item.title %>" />
+            <div class="card-info">
+              <h3><%= item.title %></h3>
+              <div class="meta">⭐ <%= item.series_rating %> / 10</div>
+              <div class="genre"><%= item.genre_name || 'No Genre' %></div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="no-watchlist">No series in <%= friend.name %>’s watchlist yet.</p>
+    <% } %>
+  </section>
+
+  <!-- ===== OPTIONAL POPUP MESSAGE ===== -->
+  <% if (message) { %>
+    <div class="popup-msg"><%= message %></div>
+  <% } %>
+
+</body>
+</html>

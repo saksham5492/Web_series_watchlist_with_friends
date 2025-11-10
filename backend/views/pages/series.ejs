@@ -53,7 +53,7 @@
               <% if (season.episodes && season.episodes.length > 0) { %>
                 <% season.episodes.forEach((ep) => { %>
                   <div class="episode-card">
-                    <h4>Episode <%= ep.number %>: <%= ep.title %></h4>
+                    <h4>Episode <%= ep.episode_number %>: <%= ep.episode_title %></h4>
                     
                   </div>
                 <% }) %>
@@ -156,6 +156,35 @@
         });
       });
     });
+
+    
+  document.querySelector('.watchlist-btn').addEventListener('click', async () => {
+    const seriesId = "<%= series.series_id %>";
+    try {
+      const res = await fetch('/watchlist/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ series_id: seriesId })
+      });
+
+      const data = await res.json();
+
+      // Create a temporary popup message
+      const msgBox = document.createElement('div');
+      msgBox.classList.add('popup-msg');
+      msgBox.innerText = data.message || 'Something went wrong!';
+      document.body.appendChild(msgBox);
+
+      // Remove popup after 2.5 seconds
+      setTimeout(() => msgBox.remove(), 2500);
+    } catch (err) {
+      console.error('Error adding to watchlist:', err);
+    }
+  });
+
+
   </script>
 </body>
 </html>

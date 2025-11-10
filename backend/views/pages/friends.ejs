@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friends | BingeSync</title>
+  <link rel="stylesheet" href="/css/friends.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="friends-page">
+    <section class="hero">
+      <div class="overlay"></div>
+      <img src="https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=1200&q=80" class="bg-image" alt="Friends" />
+      <div class="hero-content">
+        <h1>👥 Your Binge Buddies</h1>
+        <p>Connect, share watchlists, and discover together.</p>
+      </div>
+    </section>
+
+    <section class="friends-section">
+      <h2>Friends List</h2>
+
+      <% if (friends.length === 0) { %>
+        <p class="empty">You have no friends yet 😢<br>Send requests to connect!</p>
+      <% } else { %>
+        <div class="friends-grid">
+          <% friends.forEach(friend => { %>
+            <div class="friend-card">
+              <div class="avatar">
+                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=<%= friend.username %>" alt="<%= friend.username %>" />
+              </div>
+              <div class="friend-info">
+                <h3><%= friend.username %></h3>
+                <p><%= friend.email %></p>
+              </div>
+              <div class="actions">
+                <a href="/friends/watchlist/<%= friend.id %>" class="btn view-btn">
+                  <i class="fa-solid fa-tv"></i> View Watchlist
+                </a>
+                <button class="btn remove-btn" onclick="removeFriend('<%= friend.id %>')">
+                  <i class="fa-solid fa-user-xmark"></i> Remove
+                </button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  </div>
+
+  <div id="toast" class="toast">Friend removed successfully ✅</div>
+
+  <script>
+    async function removeFriend(friendId) {
+      const res = await fetch(`/friends/remove/${friendId}`, { method: 'DELETE' });
+      if (res.ok) {
+        document.querySelector(`[onclick="removeFriend('${friendId}')"]`).closest('.friend-card').remove();
+        showToast('👋 Friend removed');
+      } else {
+        showToast('❌ Could not remove friend');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+  </script>
+</body>
+</html>

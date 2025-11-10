@@ -11,31 +11,31 @@ const ExpressError = require('./utils/expressError.js');
 const nodemailer = require('nodemailer');
 dotenv.config();
 
-// ✅ Initialize app
 const app = express();
 
-// ✅ Session configuration
+// ✅ Session setup
 app.use(session({
   secret: 'yourSecretKeyHere',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // true only if using HTTPS
+  cookie: { secure: false } // use true only if HTTPS
 }));
 
-// ✅ App settings
+// ✅ View engine & middlewares
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Database connection
+// ✅ MySQL Connection
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'watchlist',
   password: 'Tejaswi49!',
-  multipleStatements: true 
+  multipleStatements: true
 });
 
 connection.connect(err => {
@@ -43,9 +43,7 @@ connection.connect(err => {
   else console.log('✅ Connected to MySQL database.');
 });
 
-// ---------------------------------------------------------
-// MAKE LOGGED-IN USER AVAILABLE IN ALL EJS TEMPLATES
-// ---------------------------------------------------------
+// ✅ Make logged-in user available in EJS
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
@@ -78,7 +76,7 @@ app.post('/watchlist/register', wrapAsync(async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+  const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
   const q = `
     INSERT INTO user (name, email, password, verified, otp, otp_expires_at)
@@ -118,34 +116,37 @@ app.post('/watchlist/register', wrapAsync(async (req, res) => {
 // Login POST
 app.post('/watchlist/login', wrapAsync(async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) return res.render('pages/login', { title: 'Login', message: '⚠️ Please fill in all fields.' });
+  if (!email || !password)
+    return res.render('pages/login', { title: 'Login', message: '⚠️ Please fill in all fields.' });
 
   const q = "SELECT * FROM user WHERE email = ?";
   connection.query(q, [email], async (err, results) => {
-    if (err) return res.render('pages/login', { title: 'Login', message: '⚠️ Server error. Try again later.' });
-    if (results.length === 0) return res.render('pages/login', { title: 'Login', message: '❌ No account found with this email.' });
+    if (err)
+      return res.render('pages/login', { title: 'Login', message: '⚠️ Server error. Try again later.' });
+    if (results.length === 0)
+      return res.render('pages/login', { title: 'Login', message: '❌ No account found with this email.' });
 
     const user = results[0];
-    if (!user.verified) return res.render('pages/login', { title: 'Login', message: '⚠️ Please verify your email before logging in.' });
+    if (!user.verified)
+      return res.render('pages/login', { title: 'Login', message: '⚠️ Please verify your email first.' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.render('pages/login', { title: 'Login', message: '❌ Incorrect password.' });
+    if (!isMatch)
+      return res.render('pages/login', { title: 'Login', message: '❌ Incorrect password.' });
 
     req.session.user = { id: user.id, name: user.name, email: user.email };
     req.session.message = `🎉 Welcome back, ${user.name}!`;
-
     console.log(`✅ ${user.name} logged in successfully.`);
     res.redirect('/watchlist/home');
   });
 }));
 
-// OTP Verification GET
+// OTP Verification
 app.get('/verify-otp', (req, res) => {
   const { email } = req.query;
   res.render('pages/verify-otp', { title: "Verify OTP", email });
 });
 
-// OTP Verification POST
 app.post('/verify-otp', wrapAsync(async (req, res) => {
   const { email, otp } = req.body;
   const q = "SELECT * FROM user WHERE email = ? AND otp = ?";
@@ -154,7 +155,8 @@ app.post('/verify-otp', wrapAsync(async (req, res) => {
     if (results.length === 0) return res.status(400).send("Invalid OTP");
 
     const user = results[0];
-    if (new Date(user.otp_expires_at) < new Date()) return res.status(400).send("OTP expired. Please register again.");
+    if (new Date(user.otp_expires_at) < new Date())
+      return res.status(400).send("OTP expired. Please register again.");
 
     const updateQ = "UPDATE user SET verified = 1, otp = NULL, otp_expires_at = NULL WHERE email = ?";
     connection.query(updateQ, [email], (err2) => {
@@ -178,7 +180,7 @@ app.get('/watchlist/home', wrapAsync(async (req, res) => {
   if (!req.session.user) return res.redirect('/watchlist/login');
 
   const q = `
-    SELECT s.series_id, s.title, s.release_year, s.summary, s.platform, 
+    SELECT s.series_id, s.title, s.release_year, s.summary, s.platform,
            s.poster_url, s.series_rating, g.genre_id, g.genre_name
     FROM series s 
     JOIN series_genres sg ON s.series_id = sg.series_id 
@@ -194,12 +196,12 @@ app.get('/watchlist/home', wrapAsync(async (req, res) => {
   });
 }));
 
-// Series detail page with seasons & episodes
+// Series detail page
 app.get('/watchlist/series/:id', (req, res) => {
   const seriesId = req.params.id;
 
   const seriesQuery = `
-    SELECT s.series_id, s.title, s.release_year, s.summary, s.platform, 
+    SELECT s.series_id, s.title, s.release_year, s.summary, s.platform,
            s.poster_url, s.series_rating, s.trailer_url, g.genre_name
     FROM series s
     JOIN series_genres sg ON s.series_id = sg.series_id
@@ -208,14 +210,16 @@ app.get('/watchlist/series/:id', (req, res) => {
   `;
 
   const seasonsQuery = `
-    SELECT se.season_id, se.number AS season_number, se.title AS season_title, se.overview AS season_overview, se.poster_url AS season_poster
+    SELECT se.season_id, se.number AS season_number, se.title AS season_title, 
+           se.overview AS season_overview, se.poster_url AS season_poster
     FROM seasons se
     WHERE se.series_id = ?
     ORDER BY se.number
   `;
 
   const episodesQuery = `
-    SELECT e.episode_id, e.season_id, e.number AS episode_number, e.title AS episode_title, e.overview AS episode_overview, e.air_date
+    SELECT e.episode_id, e.season_id, e.number AS episode_number, e.title AS episode_title,
+           e.overview AS episode_overview, e.air_date
     FROM episodes e
     JOIN seasons s ON e.season_id = s.season_id
     WHERE s.series_id = ?
@@ -223,29 +227,22 @@ app.get('/watchlist/series/:id', (req, res) => {
   `;
 
   const recommendedQuery = `
-    SELECT 
-      s.series_id AS id,
-      s.title,
-      s.poster_url,
-      s.series_rating,
-      GROUP_CONCAT(g.genre_name SEPARATOR ', ') AS genre_name
+    SELECT s.series_id AS id, s.title, s.poster_url, s.series_rating,
+           GROUP_CONCAT(g.genre_name SEPARATOR ', ') AS genre_name
     FROM series s
     JOIN series_genres sg ON s.series_id = sg.series_id
     JOIN genres g ON sg.genre_id = g.genre_id
     WHERE s.series_id != ?
     GROUP BY s.series_id
-    ORDER BY RAND()
-    LIMIT 6
+    ORDER BY RAND() LIMIT 6;
   `;
 
   connection.query(seriesQuery, [seriesId], (err, seriesResult) => {
     if (err || seriesResult.length === 0) return res.status(404).send("Series not found");
-
     const series = seriesResult[0];
 
     connection.query(seasonsQuery, [seriesId], (err2, seasonsResult) => {
       if (err2) return res.status(500).send("Error fetching seasons");
-
       const seasons = seasonsResult.map(season => ({
         season_id: season.season_id,
         number: season.season_number,
@@ -257,25 +254,15 @@ app.get('/watchlist/series/:id', (req, res) => {
 
       connection.query(episodesQuery, [seriesId], (err3, episodesResult) => {
         if (err3) return res.status(500).send("Error fetching episodes");
-
         episodesResult.forEach(ep => {
           const season = seasons.find(s => s.season_id === ep.season_id);
-          if (season) {
-            season.episodes.push({
-              episode_id: ep.episode_id,
-              number: ep.episode_number,
-              title: ep.episode_title,
-              overview: ep.episode_overview,
-              air_date: ep.air_date
-            });
-          }
+          if (season) season.episodes.push(ep);
         });
 
         connection.query(recommendedQuery, [seriesId], (err4, recommended) => {
           if (err4) return res.status(500).send("Error fetching recommendations");
 
           series.seasons = seasons;
-
           res.render("pages/series", {
             series,
             recommended,
@@ -286,6 +273,252 @@ app.get('/watchlist/series/:id', (req, res) => {
     });
   });
 });
+
+// ✅ Add to Watchlist
+app.post('/watchlist/add', (req, res) => {
+  if (!req.session.user)
+    return res.status(401).json({ success: false, message: "⚠️ Please log in first." });
+
+  const { series_id } = req.body;
+  const user_id = req.session.user.id;
+
+  const q = `
+    INSERT INTO watchlist (user_id, series_id)
+    VALUES (?, ?)
+    ON DUPLICATE KEY UPDATE added_at = NOW();
+  `;
+
+  connection.query(q, [user_id, series_id], (err) => {
+    if (err) {
+      console.error("❌ SQL Error adding to watchlist:", err);
+      return res.status(500).json({ success: false, message: "❌ Server error adding to watchlist." });
+    }
+    console.log("✅ Added to watchlist!");
+    return res.json({ success: true, message: "✅ Added to Watchlist!" });
+  });
+});
+
+// ✅ View Watchlist Page
+app.get("/watchlist", (req, res) => {
+  if (!req.session.user) return res.redirect("/watchlist/login");
+  const userId = req.session.user.id;
+
+  const query = `
+    SELECT 
+      s.series_id, s.title, s.poster_url, s.summary, 
+      s.series_rating, s.platform,
+      GROUP_CONCAT(g.genre_name SEPARATOR ', ') AS genre_name
+    FROM watchlist w
+    JOIN series s ON w.series_id = s.series_id
+    LEFT JOIN series_genres sg ON s.series_id = sg.series_id
+    LEFT JOIN genres g ON sg.genre_id = g.genre_id
+    WHERE w.user_id = ?
+    GROUP BY s.series_id
+    ORDER BY w.added_at DESC;
+  `;
+
+  connection.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("❌ Error fetching watchlist:", err);
+      return res.status(500).send("Server Error");
+    }
+    res.render("pages/watchlist", { watchlist: results, user: req.session.user });
+  });
+});
+
+// ✅ Remove from Watchlist
+
+app.delete('/watchlist/delete/:seriesId', (req, res) => {
+  if (!req.session.user) return res.status(401).json({ message: 'Unauthorized' });
+
+  const { seriesId } = req.params;
+  const userId = req.session.user.id;
+
+  const q = `DELETE FROM watchlist WHERE user_id = ? AND series_id = ?`;
+
+  connection.query(q, [userId, seriesId], (err, result) => {
+    if (err) {
+      console.error('❌ Error deleting from watchlist:', err);
+      return res.status(500).json({ message: 'Error removing series' });
+    }
+
+    if (result.affectedRows === 0)
+      return res.status(404).json({ message: 'Series not found in watchlist' });
+
+    res.json({ message: '✅ Series removed from your watchlist!' });
+  });
+});
+
+
+
+// ---------------------------------------------------------
+// 🧩 FRIENDSHIP SYSTEM ROUTES
+// ---------------------------------------------------------
+
+// ✅ View all users (to send friend requests)
+app.get('watchlist/friends', (req, res) => {
+  if (!req.session.user) return res.redirect('/watchlist/login');
+  const currentUserId = req.session.user.id;
+
+  const q = `
+    SELECT id, name, email
+    FROM user
+    WHERE id != ?
+    ORDER BY name ASC
+  `;
+  connection.query(q, [currentUserId], (err, users) => {
+    if (err) {
+      console.error("❌ Error fetching users:", err);
+      return res.status(500).send("Server error");
+    }
+    res.render('pages/friends', { users, user: req.session.user });
+  });
+});
+
+// ✅ Send a friend request
+app.post('/watchlist/friends/request', (req, res) => {
+  if (!req.session.user) return res.status(401).json({ message: 'Unauthorized' });
+  const sender_id = req.session.user.id;
+  const { receiver_id } = req.body;
+
+  const q = `
+    INSERT INTO friendships (sender_id, receiver_id, status)
+    VALUES (?, ?, 'pending')
+    ON DUPLICATE KEY UPDATE status = 'pending'
+  `;
+  connection.query(q, [sender_id, receiver_id], (err) => {
+    if (err) {
+      console.error('❌ Error sending friend request:', err);
+      return res.status(500).json({ message: 'Error sending friend request' });
+    }
+    res.json({ message: '✅ Friend request sent!' });
+  });
+});
+
+// ✅ Accept a friend request
+app.post('/watchlist/friends/accept', (req, res) => {
+  if (!req.session.user) return res.status(401).json({ message: 'Unauthorized' });
+  const receiver_id = req.session.user.id;
+  const { sender_id } = req.body;
+
+  const q = `UPDATE friendships SET status = 'accepted' WHERE sender_id = ? AND receiver_id = ?`;
+  connection.query(q, [sender_id, receiver_id], (err) => {
+    if (err) {
+      console.error('❌ Error accepting friend request:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+    res.json({ message: '✅ Friend request accepted!' });
+  });
+});
+
+// ✅ View accepted friends
+app.get('/watchlist/friends/list', (req, res) => {
+  if (!req.session.user) return res.redirect('/watchlist/login');
+  const currentUserId = req.session.user.id;
+
+  const q = `
+    SELECT u.id, u.name, u.email
+    FROM friendships f
+    JOIN user u ON (u.id = f.sender_id OR u.id = f.receiver_id)
+    WHERE (f.sender_id = ? OR f.receiver_id = ?)
+      AND f.status = 'accepted'
+      AND u.id != ?
+  `;
+  connection.query(q, [currentUserId, currentUserId, currentUserId], (err, friends) => {
+    if (err) {
+      console.error('❌ Error fetching friends list:', err);
+      return res.status(500).send('Error fetching friends');
+    }
+    res.render('pages/friends-list', { friends, user: req.session.user });
+  });
+});
+
+// ✅ View a friend’s watchlist
+// ✅ View a friend's watchlist
+app.get('/watchlist/friends/watchlist/:friendId', (req, res) => {
+  if (!req.session.user) return res.redirect('/watchlist/login');
+  
+  const userId = req.session.user.id;
+  const friendId = req.params.friendId;
+
+  // check friendship
+  const checkQ = `
+    SELECT * FROM friendships 
+    WHERE ((sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?))
+    AND status = 'accepted'
+  `;
+
+  connection.query(checkQ, [userId, friendId, friendId, userId], (err, friendsRes) => {
+    if (err) {
+      console.error("❌ Error verifying friendship:", err);
+      return res.status(500).send("Server Error");
+    }
+    if (friendsRes.length === 0) {
+      return res.status(403).send("⚠️ You are not friends with this user.");
+    }
+
+    // fetch friend's name + watchlist
+    const q = `
+      SELECT s.series_id, s.title, s.poster_url, s.summary, 
+             s.series_rating, s.platform,
+             GROUP_CONCAT(g.genre_name SEPARATOR ', ') AS genre_name
+      FROM watchlist w
+      JOIN series s ON w.series_id = s.series_id
+      LEFT JOIN series_genres sg ON s.series_id = sg.series_id
+      LEFT JOIN genres g ON sg.genre_id = g.genre_id
+      WHERE w.user_id = ?
+      GROUP BY s.series_id
+      ORDER BY w.added_at DESC;
+    `;
+
+    connection.query(q, [friendId], (err2, results) => {
+      if (err2) {
+        console.error("❌ Error fetching friend's watchlist:", err2);
+        return res.status(500).send("Server Error");
+      }
+
+      // get friend's name
+      connection.query("SELECT name FROM user WHERE id = ?", [friendId], (err3, userRes) => {
+        if (err3 || userRes.length === 0) {
+          return res.status(404).send("Friend not found");
+        }
+
+        const friend = { id: friendId, name: userRes[0].name };
+        res.render('pages/friend-watchlist', {
+  friend,
+  watchlist: results,
+  message: null, // prevent EJS undefined errors
+});
+
+        
+      });
+    });
+  });
+});
+
+
+// ✅ View incoming friend requests
+app.get('/watchlist/friends/requests', (req, res) => {
+  if (!req.session.user) return res.redirect('/watchlist/login');
+  const currentUserId = req.session.user.id;
+
+  const q = `
+    SELECT f.sender_id AS id, u.name, u.email, f.status, f.created_at
+    FROM friendships f
+    JOIN user u ON f.sender_id = u.id
+    WHERE f.receiver_id = ? AND f.status = 'pending'
+    ORDER BY f.created_at DESC
+  `;
+
+  connection.query(q, [currentUserId], (err, requests) => {
+    if (err) {
+      console.error("❌ Error fetching requests:", err);
+      return res.status(500).send("Error fetching requests");
+    }
+    res.render('pages/friend-requests', { requests, user: req.session.user });
+  });
+});
+
 
 // ---------------------------------------------------------
 // ERROR HANDLING
