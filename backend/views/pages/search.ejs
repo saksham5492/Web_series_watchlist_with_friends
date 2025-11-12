@@ -46,6 +46,33 @@
               border-radius: 10px;
               overflow: hidden;
             }
+
+			@media (max-width: 500px) {
+				body {
+					/* Reduce padding for small screens */
+					padding: 20px 15px;
+				}
+
+				/* Make the title a bit smaller */
+				.section-header {
+					font-size: 1.5rem;
+				}
+				
+				/* Make the paragraph on the genre page smaller */
+				.genre-header p {
+					font-size: 0.95rem;
+				}
+				
+				.results-grid,
+				.genre-grid {
+					/* Make the grid gap a little smaller */
+					gap: 15px;
+					
+					/* Adjust grid columns for very narrow phones
+					to ensure cards aren't too squished */
+					grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+				}
+			}
         </style>
     </head>
     <body>
