@@ -67,19 +67,18 @@
 				<i class="fa-solid fa-bars menu-toggle" id="menuToggle"></i>
 
 				<div class="nav-links" id="navLinks">
-					<a href="#">Home</a>
-					<a href="#">Web Series</a>
-					<a href="#">Connections</a>
+					<a href="#" class="active">Home</a>
 					<a href="#">Watchlist</a>
+					<a href="#">Friends</a>
+					<a href="#">Requests</a>
 
 					<select id="genreSelect" onchange="goToGenrePage(this)">
 						<option value="" disabled selected>Genres</option>
-						<option value="#">Popular</option>
-						<option value="#">Crime</option>
-						<option value="#">Thriller</option>
-						<option value="#">Action</option>
-						<option value="#">Comedy</option>
-						<option value="#">Romance</option>
+						<% allGenres.forEach(g => { %>
+						<option value="/watchlist/genre/<%= g.genre_id %>">
+							<%= g.genre_name %>
+						</option>
+						<% }) %>
 					</select>
 				</div>
 
@@ -231,15 +230,11 @@
 			<hr class="footer-hr" />
 			<div class="footer-content">
 				<!-- Left -->
-				<div class="footer-left">
-					<a href="/watchlist/home">
-						<img
-							class="footer-logo"
-							src="/Images/TheaterLogoFinal.png"
-							alt="ApnaTheatre Logo"
-						/>
+				<div class="nav-left">
+					<a href="#" class="logo">
+						<i class="bx bx-movie-play bx-tada main-color"></i>
+						BING<span class="logo-e">E</span>SYNC
 					</a>
-					<p class="footer-bottom-tagline">Watch! Chill! Repeat!</p>
 				</div>
 
 				<!-- Follow Us -->
@@ -483,6 +478,10 @@
 					}
 				);
 			});
+			function goToGenrePage(select) {
+				const value = select.value;
+				if (value) window.location.href = value;
+			}
 		</script>
 	</body>
 </html>

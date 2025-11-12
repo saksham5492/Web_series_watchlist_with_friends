@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title><%= genreName %> Series | BingeSync</title>
+		<link rel="stylesheet" href="/css/genre.css" />
+	</head>
+
+	<body>
+		<section class="genre-header">
+			<h1><%= genreName %> Series</h1>
+			<p>Explore the best <%= genreName %> shows, handpicked for you.</p>
+		</section>
+
+		<section class="genre-grid">
+			<% if (seriesList.length === 0) { %>
+			<p class="empty">No series found in this genre 😅</p>
+			<% } else { %> <% seriesList.forEach(series => { %>
+			<a href="/watchlist/series/<%= series.series_id %>" class="series-card">
+				<img src="<%= series.poster_url %>" alt="<%= series.title %>" />
+				<div class="series-info">
+					<h3><%= series.title %></h3>
+					<p>⭐ <%= series.series_rating %></p>
+				</div>
+			</a>
+			<% }) %> <% } %>
+		</section>
+	</body>
+</html>

@@ -247,6 +247,64 @@ app.use((req, res, next) => {
 // ---------------------------------------------------------
 // ✅ Route for home page with hero section
 // HOME PAGE
+// ✅ Middleware: Make all genres available in navbar dropdown
+app.use(async (req, res, next) => {
+	try {
+		const [allGenres] = await connection.promise().query(`
+      SELECT genre_id, genre_name FROM genres ORDER BY genre_name;
+    `);
+		res.locals.allGenres = allGenres; // available in all EJS files
+	} catch (err) {
+		console.error("Error loading genres:", err);
+		res.locals.allGenres = [];
+	}
+	next();
+});
+// ✅ GENRE PAGE ROUTE
+app.get("/watchlist/genre/:id", async (req, res) => {
+	try {
+		const genreId = req.params.id;
+
+		// 1️⃣ Get genre name
+		const [genreRows] = await connection
+			.promise()
+			.query(`SELECT genre_name FROM genres WHERE genre_id = ?`, [genreId]);
+
+		if (genreRows.length === 0) {
+			return res.status(404).send("Genre not found");
+		}
+
+		const genreName = genreRows[0].genre_name;
+
+		// 2️⃣ Fetch all series for this genre
+		const [seriesList] = await connection.promise().query(
+			`
+      SELECT 
+        s.series_id, 
+        s.title, 
+        s.poster_url, 
+        s.series_rating, 
+        s.summary
+      FROM series s
+      JOIN series_genres sg ON s.series_id = sg.series_id
+      WHERE sg.genre_id = ?
+      ORDER BY s.series_rating DESC;
+      `,
+			[genreId]
+		);
+
+		// 3️⃣ Render the genre page
+		res.render("pages/genre", {
+			genreName,
+			seriesList,
+			user: req.session.user || null,
+		});
+	} catch (err) {
+		console.error("❌ Error loading genre page:", err);
+		res.status(500).send("Internal Server Error");
+	}
+});
+
 app.get("/watchlist/home", async (req, res) => {
 	try {
 		if (!req.session.user) {
