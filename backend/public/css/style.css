@@ -24,7 +24,7 @@ body::before {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url("https://plus.unsplash.com/premium_photo-1667861381644-3a29c049b6ec?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170")
+  background: url("https://i.pinimg.com/1200x/19/8b/2f/198b2f01e73b905772279616eccc7c65.jpg")
     no-repeat center;
   background-position: center 35%; /* adjust this for exact face alignment */
   background-size: cover;
@@ -168,3 +168,110 @@ button:hover {
   100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 }
 
+/* FIX FOR BROWSER AUTOFILL WHITE BACKGROUND */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff; /* Makes autofill text white */
+  box-shadow: 0 0 0 1000px transparent inset; /* Hides the white background */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* A similar fix for Firefox (just in case) */
+input:-moz-autofill {
+   -moz-text-fill-color: #fff !important;
+   box-shadow: 0 0 0 1000px transparent inset;
+}
+
+/* 1. MODIFY your existing 'body' rule */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* <-- THIS IS THE KEY CHANGE */
+  min-height: 100vh;
+  width: 100%;
+  padding: 0 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 2. ADD these NEW rules for the logo */
+
+.nav-left {
+  /* This adds space between the logo and the login box */
+  margin-bottom: 30px; 
+  display: flex;
+  justify-content: center;
+}
+
+.nav-left .logo {
+  display: flex; /* Aligns the icon and text nicely */
+  align-items: center;
+  text-decoration: none;
+  font-size: 2.5rem; /* Makes logo bigger */
+  font-weight: 700;
+  color: #fff; /* Makes logo text white */
+}
+
+.nav-left .logo i {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 2.5rem;
+}
+
+
+
+.logo {
+	font-size: 1.8rem; /* all letters same size */
+	font-weight: 900;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: #ffffff; /* default text color white */
+}
+.logo i {
+	font-size: 2rem; /* icon size */
+	color: var(--main-color); /* red icon */
+	margin-right: 0.3rem; /* small space between icon and text */
+}
+.logo .logo-e {
+	color: var(--main-color); /* only "E" in red */
+}
+
+:root {
+	--main-color: #c0392b;
+	--text-color: #ffffff;
+} 
+
+/* ============================================== */
+/* RESPONSIVE STYLES (for mobile phones)        */
+/* ============================================== */
+@media (max-width: 450px) {
+  .wrapper {
+    /* Use percentage width so it fits the screen */
+    width: 95%; 
+    
+    /* Reduce padding on the sides */
+    padding: 20px 15px;
+  }
+
+  .nav-left .logo {
+    /* Slightly smaller logo on small screens */
+    font-size: 1.8rem;
+  }
+  .nav-left .logo i {
+    font-size: 2.1rem;
+  }
+
+  h2 {
+    font-size: 1.8rem; /* Smaller "Login/Register" text */
+  }
+
+  .forget {
+    /* Stack the "Remember me" and "Forgot" link */
+    flex-direction: column;
+    gap: 15px; /* Add space between them */
+    margin: 20px 0 25px 0;
+  }
+}

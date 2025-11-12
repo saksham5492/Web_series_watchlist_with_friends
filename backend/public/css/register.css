@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
+:root {
+  /* Define your brand color once here */
+  --main-color: #c0392b; 
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +16,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column; /* This stacks the logo and form */
   min-height: 100vh;
   width: 100%;
   padding: 0 10px;
@@ -23,7 +29,7 @@ body::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("https://images.unsplash.com/photo-1675295275119-b3ffe5448c9c?ixlib=rb-4.1.0&auto=format&fit=crop&w=1026&q=80")
+  background: url("https://i.pinimg.com/1200x/19/8b/2f/198b2f01e73b905772279616eccc7c65.jpg")
     no-repeat center;
   background-position: center 35%;
   background-size: cover;
@@ -38,9 +44,46 @@ body::before {
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* Note: I fixed your typo 'blur(50px)' here */
   z-index: 1;
 }
+
+/* ============================================== */
+/* ✅ LOGO STYLES (THIS IS THE FIX)             */
+/* ============================================== */
+
+.nav-left {
+  margin-bottom: 30px; /* Adds space above the register box */
+  display: flex;
+  justify-content: center;
+}
+
+.nav-left .logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff; /* White text */
+  font-weight: 900;
+  
+  /* ✅ CHANGE YOUR TEXT SIZE HERE */
+  font-size: 2.5rem; /* <-- This now controls the "BINGESYNC" text size */
+}
+
+.nav-left .logo i {
+  color: var(--main-color); /* Uses your red color */
+  margin-right: 0.5rem; /* Space between icon and text */
+
+  /* ✅ CHANGE YOUR ICON SIZE HERE */
+  font-size: 2.5rem; /* <-- This controls the movie icon size */
+}
+
+.nav-left .logo .logo-e {
+  color: var(--main-color); /* Makes the "E" red */
+}
+
+/* ============================================== */
+/* FORM STYLES                                  */
+/* ============================================== */
 
 form {
   display: flex;
@@ -122,4 +165,55 @@ button:hover {
 
 .register a:hover {
   text-decoration: underline;
+}
+
+
+/* ============================================== */
+/* FIX FOR AUTOFILL WHITE BACKGROUND (REGISTER)  */
+/* ============================================== */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important; 
+  box-shadow: 0 0 0 1000px transparent inset !important; 
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-moz-autofill {
+   -moz-text-fill-color: #fff !important;
+   box-shadow: 0 0 0 1000px transparent inset !important;
+}
+
+/* ============================================== */
+/* RESPONSIVE STYLES (for mobile phones)        */
+/* ============================================== */
+@media (max-width: 450px) {
+  .wrapper {
+    /* Use percentage width so it fits the screen */
+    width: 95%; 
+    
+    /* Reduce padding on the sides */
+    padding: 20px 15px;
+  }
+
+  .nav-left .logo {
+    /* Slightly smaller logo on small screens */
+    font-size: 1.8rem;
+  }
+  .nav-left .logo i {
+    font-size: 2.1rem;
+  }
+
+  h2 {
+    font-size: 1.8rem; /* Smaller "Login/Register" text */
+  }
+
+  .forget {
+    /* Stack the "Remember me" and "Forgot" link */
+    flex-direction: column;
+    gap: 15px; /* Add space between them */
+    margin: 20px 0 25px 0;
+  }
 }
