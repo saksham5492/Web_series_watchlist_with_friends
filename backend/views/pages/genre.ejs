@@ -1,30 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title><%= genreName %> Series | BingeSync</title>
-		<link rel="stylesheet" href="/css/genre.css" />
-	</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= genreName %> Series | BingeSync</title>
+        
+        <link rel="stylesheet" href="/css/genre.css" />
+        <link rel="stylesheet" href="/css/home.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        />
 
-	<body>
-		<section class="genre-header">
-			<h1><%= genreName %> Series</h1>
-			<p>Explore the best <%= genreName %> shows, handpicked for you.</p>
-		</section>
+        <style>
+            body {
+                background: #0b0b0b;
+                color: #fff;
+                font-family: "Ubuntu", sans-serif;
+                padding: 40px; /* ✅ Added body padding for consistency */
+            }
+        
+            /* ✅ Left-aligned header text */
+            .genre-header h1 {
+                text-align: left;
+            }
+            .genre-header p {
+                text-align: left;
+                font-size: 1.1rem;
+                color: #bbb;
+                margin-top: -10px;
+            }
+        
+            .genre-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+                justify-items: center;
+                padding: 20px 0; /* ✅ Removed horizontal padding */
+            }
 
-		<section class="genre-grid">
-			<% if (seriesList.length === 0) { %>
-			<p class="empty">No series found in this genre 😅</p>
-			<% } else { %> <% seriesList.forEach(series => { %>
-			<a href="/watchlist/series/<%= series.series_id %>" class="series-card">
-				<img src="<%= series.poster_url %>" alt="<%= series.title %>" />
-				<div class="series-info">
-					<h3><%= series.title %></h3>
-					<p>⭐ <%= series.series_rating %></p>
-				</div>
-			</a>
-			<% }) %> <% } %>
-		</section>
-	</body>
+            .movie-item {
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .empty {
+                text-align: center;
+                grid-column: 1 / -1;
+                font-size: 1.2rem;
+                color: #888;
+                margin-top: 30px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <section class="genre-header">
+            <h1 class="section-header"><%= genreName %> Series</h1>
+            <p>Explore the best <%= genreName %> shows, handpicked for you.</p>
+        </section>
+
+        <section class="genre-grid">
+            <% if (seriesList.length === 0) { %>
+            <p class="empty">No series found in this genre 😅</p>
+            <% } else { %> 
+                <% seriesList.forEach(series => { %>
+                
+                <a href="/watchlist/series/<%= series.series_id %>" class="movie-item">
+                    <img src="<%= series.poster_url %>" alt="<%= series.title %>" />
+                    <div class="movie-item-content">
+                        <div class="movie-item-title"><%= series.title %></div>
+                        <div class="movie-infos">
+                            <div class="movie-info">
+                                <i class="fa-solid fa-star"></i>
+                                <span><%= series.series_rating ? parseFloat(series.series_rating).toFixed(1) : "N/A" %></span>
+                            </div>
+                            <div class="movie-info">
+                                <span>HD</span>
+                            </div>
+                            <div class="movie-info">
+                                <span>16+</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <% }) %> 
+            <% } %>
+        </section>
+    </body>
 </html>
