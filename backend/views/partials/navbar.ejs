@@ -1,0 +1,643 @@
+<!-- Navbar -->
+<link rel="shortcut icon" href="/Images/Logo/Title.jpeg" type="image/x-icon" />
+<link
+	href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+	rel="stylesheet"
+/>
+
+<!-- Owl Carousel CSS -->
+<
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+/>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+/>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<!-- Fonts & Icons -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+	rel="stylesheet"
+/>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+<style>
+	@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+	:root {
+		--main-color: #c0392b;
+		--text-color: #ffffff;
+	} /* ===== GLOBAL RESET ===== */
+	.footer {
+		background: #000;
+		color: #fff;
+		padding: 60px 5%;
+		position: relative;
+		font-family: "Poppins", sans-serif;
+	}
+	/* ===== NAVBAR ===== */
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: #000000;
+		position: fixed; /* makes sure it starts from the top */
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 80px; /* increased navbar height */
+		padding: 0 30px;
+		z-index: 999;
+		box-shadow: 0 0 10px rgba(255, 63, 42, 0.629);
+	}
+	.logo {
+		font-size: 1.8rem; /* all letters same size */
+		font-weight: 900;
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		color: #ffffff; /* default text color white */
+	}
+	.logo i {
+		font-size: 2rem; /* icon size */
+		color: var(--main-color); /* red icon */
+		margin-right: 0.3rem; /* small space between icon and text */
+	}
+	.logo .logo-e {
+		color: var(--main-color); /* only "E" in red */
+	}
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+	}
+	.nav-links a {
+		position: relative;
+		color: white;
+		text-decoration: none;
+		font-size: 18px;
+		padding-bottom: 4px;
+		display: inline-block;
+		transition: color 0.3s ease;
+	}
+	.nav-links a {
+		position: relative;
+		color: white;
+		text-decoration: none;
+		font-size: 18px;
+		padding-bottom: 4px;
+		display: inline-block;
+		transition: color 0.3s ease;
+	} /* Hover underline animation */
+	.nav-links a::after {
+		content: "";
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		transform: translateX(-50%);
+		width: 0;
+		height: 2px;
+		background: var(--main-color);
+		transition: width 0.3s ease;
+	} /* Hover effect */
+	.nav-links a:hover {
+		color: var(--main-color);
+		text-shadow: 0 0 8px var(--main-color);
+	}
+	.nav-links a:hover::after {
+		width: 60%;
+	} /* ✅ Active (selected) link */
+	.nav-links a.active {
+		color: var(--main-color);
+		font-weight: 600;
+	}
+	.nav-links a.active::after {
+		width: 60%;
+	}
+	select {
+		background-color: #000000;
+		color: white;
+		font-size: 16px;
+		padding: 7px 14px;
+		border: none; /* remove red border */
+		border-radius: 6px;
+		cursor: pointer;
+		outline: none;
+		appearance: none;
+		background-image: linear-gradient(45deg, transparent 50%, #c0392b 50%),
+			linear-gradient(135deg, #c0392b 50%, transparent 50%);
+		background-position: calc(100% - 18px) calc(1em + 2px),
+			calc(100% - 13px) calc(1em + 2px);
+		background-size: 5px 5px, 5px 5px;
+		background-repeat: no-repeat;
+		transition: box-shadow 0.3s ease, background-color 0.3s ease;
+	}
+	select:hover {
+		background-color: #1a1a1a;
+		box-shadow: 0 0 10px rgba(192, 57, 43, 0.5);
+	} /* ===== SEARCH BAR ===== */
+	.search-container {
+		display: flex;
+		align-items: center;
+		position: relative;
+		margin-right: 18px;
+	}
+	.search-container input {
+		background-color: #111;
+		border: 1px solid #c0392b;
+		color: white;
+		padding: 7px 14px;
+		border-right: none; /* remove right border */
+		border-radius: 6px 0 0 6px;
+		width: 180px;
+		transition: width 0.4s ease-in-out, box-shadow 0.3s;
+	}
+	.search-container input:focus {
+		width: 240px;
+		outline: none;
+	} /* Navbar search button half-fill animation */
+	.search-container button {
+		position: relative;
+		overflow: hidden;
+		background: transparent; /* transparent initially */
+		color: #fff;
+		padding: 7px 12px;
+		border: 1px solid #c0392b;
+		border-radius: 0 6px 6px 0; /* rounded right side */
+		cursor: pointer;
+		transition: color 0.5s ease;
+		z-index: 1;
+		margin-left: -2px; /* overlap with input border */
+	}
+	.search-container button::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 50%; /* initial half-fill */
+		height: 100%;
+		background-color: rgba(223, 44, 4, 0.943);
+		transition: width 0.6s ease;
+		z-index: -1;
+	}
+	.search-container button:hover::before {
+		width: 100%;
+	}
+	.search-container button span,
+	.search-container button i {
+		position: relative;
+		z-index: 2;
+	}
+	.user-icon {
+		color: white;
+		font-size: 28px;
+		cursor: pointer;
+		margin-left: 20px;
+		transition: 0.3s;
+	}
+	.user-icon:hover {
+		color: #c0392b;
+		text-shadow: 0 0 12px #c0392b;
+	}
+	.menu-toggle {
+		display: none;
+		font-size: 25px;
+		color: white;
+		cursor: pointer;
+	}
+	.search-container {
+		position: relative;
+	}
+	.search-results-box {
+		position: absolute;
+		top: 110%;
+		left: 0;
+		width: 100%;
+		background-color: #1a1a1a;
+		border-radius: 6px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+		z-index: 999;
+		display: none;
+		max-height: 300px;
+		overflow-y: auto;
+	}
+	.search-results-box a {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px;
+		text-decoration: none;
+		color: #fff;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	.search-results-box a:hover {
+		background-color: #2b2b2b;
+	}
+	.search-results-box img {
+		width: 40px;
+		height: 55px;
+		object-fit: cover;
+		border-radius: 4px;
+	}
+	.search-results-box span {
+		font-size: 0.95rem;
+	} /* ===== RESPONSIVE NAV ===== */
+	@media (max-width: 850px) {
+		.nav-links {
+			display: none;
+			flex-direction: column;
+			background-color: #111;
+			position: absolute;
+			top: 60px;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			padding: 20px 0;
+			gap: 15px;
+		}
+		.nav-links.active {
+			display: flex;
+		}
+		.menu-toggle {
+			display: block;
+		}
+		.search-container input {
+			width: 130px;
+		}
+	} /* ===== SIDEBAR OVERLAY (background blur + disable click) ===== */
+	.sidebar-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(15, 15, 15, 0.6);
+		backdrop-filter: blur(6px);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.3s ease-in-out;
+		z-index: 997;
+	}
+
+	.sidebar-overlay.active {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	/* ===== MODERN MINI SIDEBAR ===== */
+	.sidebar {
+		position: fixed;
+		top: 70px; /* below navbar */
+		right: -250px; /* hidden */
+		width: 220px;
+		height: 70vh;
+		background: linear-gradient(
+			to bottom right,
+			rgba(50, 50, 50, 0.95),
+			rgba(20, 20, 20, 0.95),
+			rgba(70, 70, 70, 0.9)
+		);
+		backdrop-filter: blur(12px);
+		border-left: 1px solid rgba(255, 255, 255, 0.15);
+		border-radius: 12px 0 0 12px;
+		box-shadow: -4px 0 20px rgba(0, 0, 0, 0.7);
+		color: #fff;
+		opacity: 0;
+		pointer-events: none;
+		transition: right 0.45s ease, opacity 0.4s ease;
+		z-index: 998;
+	}
+
+	.sidebar.active {
+		right: 15px;
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	/* ===== CLOSE BUTTON ===== */
+	.close-btn {
+		position: absolute;
+		top: 10px;
+		left: 12px;
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 22px;
+		cursor: pointer;
+		transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+	}
+
+	.close-btn:hover {
+		color: #ff4444;
+		text-shadow: 0 0 10px #ff0000;
+		transform: scale(1.2) rotate(90deg);
+	}
+
+	/* ===== SIDEBAR INNER CONTENT ===== */
+	.sidebar-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 35px 15px;
+		height: 100%;
+	}
+
+	.sidebar-header {
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	.sidebar-avatar {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		border: 2px solid rgba(255, 0, 0, 0.8);
+		box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+		margin-bottom: 8px;
+		object-fit: cover;
+	}
+
+	.sidebar-name {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #f5f5f5;
+	}
+
+	.sidebar-line {
+		width: 80%;
+		border: none;
+		height: 1px;
+		background: linear-gradient(to right, transparent, red, transparent);
+		margin: 12px 0;
+	}
+
+	.sidebar-menu p {
+		font-size: 0.9rem;
+		margin: 10px 0;
+		cursor: pointer;
+		transition: color 0.3s ease, transform 0.2s ease;
+		color: #ddd;
+		text-align: center;
+	}
+
+	.sidebar-menu p:hover {
+		color: #ff4444;
+		text-shadow: 0 0 10px red;
+		transform: translateX(4px);
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.sidebar {
+			width: 180px;
+			height: 65vh;
+		}
+
+		.sidebar.active {
+			right: 10px;
+		}
+
+		.close-btn {
+			font-size: 20px;
+		}
+	}
+</style>
+<div class="nav">
+	<nav>
+		<div class="nav-left">
+			<a href="#" class="logo">
+				<i class="bx bx-movie-play bx-tada main-color"></i>
+				BING<span class="logo-e">E</span>SYNC
+			</a>
+		</div>
+
+		<div class="nav-links" id="navLinks">
+			<a href="#" class="active">Home</a>
+			<a href="#">Watchlist</a>
+			<a href="#">Friends</a>
+			<a href="#">Requests</a>
+
+			<select id="genreSelect" onchange="goToGenrePage(this)">
+				<option value="" disabled selected>Genres</option>
+				<% allGenres.forEach(g => { %>
+				<option value="/watchlist/genre/<%= g.genre_id %>">
+					<%= g.genre_name %>
+				</option>
+				<% }) %>
+			</select>
+		</div>
+
+		<div class="search-container">
+			<form action="/watchlist/search" method="GET" id="searchForm">
+				<input
+					type="text"
+					name="q"
+					id="searchText"
+					placeholder="Search series..."
+					autocomplete="off"
+					required
+				/>
+				<button type="submit">SEARCH</button>
+			</form>
+			<div id="liveResults" class="search-results-box"></div>
+			<i class="fa-solid fa-circle-user user-icon"></i>
+		</div>
+	</nav>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<%- include('../partials/sidebar', { user: user }) %>
+<!-- JS (moved to bottom for proper loading) -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+		<script>
+			const searchInput = document.getElementById("searchText");
+			const liveResults = document.getElementById("liveResults");
+			let debounceTimer;
+
+			searchInput.addEventListener("input", () => {
+				clearTimeout(debounceTimer);
+				const query = searchInput.value.trim();
+				if (query === "") {
+					liveResults.style.display = "none";
+					return;
+				}
+
+				debounceTimer = setTimeout(async () => {
+					try {
+						const res = await fetch(
+							`/api/search?q=${encodeURIComponent(query)}`
+						);
+						const data = await res.json();
+
+						if (data.length === 0) {
+							liveResults.style.display = "none";
+							return;
+						}
+
+						liveResults.innerHTML = data
+							.map(
+								(s) => `
+					<a href="/watchlist/series/${s.series_id}" class="result-item">
+						<img src="${s.poster_url}" alt="${s.title}">
+						<div>
+							<strong>${s.title}</strong>
+							<small>⭐ ${s.series_rating}  ${s.all_genres || ""}</small>
+						</div>
+					</a>
+				`
+							)
+							.join("");
+
+						liveResults.style.display = "block";
+					} catch (err) {
+						console.error(err);
+					}
+				}, 300);
+			});
+
+			// Hide dropdown when clicking outside
+			document.addEventListener("click", (e) => {
+				if (!document.querySelector(".search-container").contains(e.target)) {
+					liveResults.style.display = "none";
+				}
+			});
+
+			$(document).ready(function () {
+				var owl = $("#hero-carousel");
+
+				owl.owlCarousel({
+					items: 1,
+					loop: true,
+					nav: true,
+					dots: false,
+					navText: [
+						"<i class='fas fa-chevron-left'></i>",
+						"<i class='fas fa-chevron-right'></i>",
+					],
+					autoplay: true,
+					autoplayTimeout: 5000,
+					autoplayHoverPause: true,
+				});
+
+				// Animate the content of the **currently active slide on page load**
+				$(".owl-item.active .hero-slide-item-content").addClass("active");
+
+				// Animate content on slide change
+				owl.on("changed.owl.carousel", function (event) {
+					// Remove active from all slide contents
+					$(".hero-slide-item-content").removeClass("active");
+
+					// Add active to content in the currently active slide
+					$(".owl-item")
+						.eq(event.item.index)
+						.find(".hero-slide-item-content")
+						.addClass("active");
+				});
+				// Scroll to Top Button
+				const scrollBtn = document.getElementById("scrollToTopButton");
+
+				window.addEventListener("scroll", () => {
+					if (
+						document.body.scrollTop > 100 ||
+						document.documentElement.scrollTop > 100
+					) {
+						scrollBtn.style.display = "block";
+					} else {
+						scrollBtn.style.display = "none";
+					}
+				});
+
+				scrollBtn.addEventListener("click", () => {
+					window.scrollTo({ top: 0, behavior: "smooth" });
+				});
+				// Navbar toggle
+				$("#menuToggle").on("click", () =>
+					$("#navLinks").toggleClass("active")
+				);
+
+				// Genre select
+				window.goToGenrePage = (select) => {
+					const value = select.value;
+					if (value) window.location.href = value;
+				};
+
+				const leftBtns = document.querySelectorAll(".scroll-btn.left");
+				const rightBtns = document.querySelectorAll(".scroll-btn.right");
+
+				leftBtns.forEach((btn) => {
+					const carousel = btn
+						.closest(".genre-carousel-wrapper")
+						.querySelector(".genre-carousel");
+					btn.addEventListener("click", () => {
+						const cardWidth =
+							carousel.querySelector(".movie-item").offsetWidth + 18; // card width + gap
+						carousel.scrollBy({ left: -cardWidth, behavior: "smooth" });
+					});
+				});
+
+				rightBtns.forEach((btn) => {
+					const carousel = btn
+						.closest(".genre-carousel-wrapper")
+						.querySelector(".genre-carousel");
+					btn.addEventListener("click", () => {
+						const cardWidth =
+							carousel.querySelector(".movie-item").offsetWidth + 18; // card width + gap
+						carousel.scrollBy({ left: cardWidth, behavior: "smooth" });
+					});
+				});
+
+				// Search filter
+				$("#searchText").on("input", function () {
+					const query = $(this).val().toLowerCase();
+					$(".netflix-card").each(function () {
+						const title = $(this).find(".title").text().toLowerCase();
+						$(this).toggle(title.includes(query));
+					});
+				});
+				$("#top-movies-carousel").owlCarousel({
+					loop: true,
+					margin: 0, // no space between cards
+					nav: true,
+					dots: false,
+					autoWidth: true, // allows items to take image width
+					items: 5,
+					slideBy: 1, // shows 8 items if space allows
+					responsive: {
+						0: { items: 2 },
+						480: { items: 3 },
+						768: { items: 5 },
+						1024: { items: 8 },
+					},
+					navText: [
+						"<i class='bx bx-chevron-left'></i>",
+						"<i class='bx bx-chevron-right'></i>",
+					],
+					autoplay: true,
+					autoplayTimeout: 2000,
+					autoplayHoverPause: true,
+					smartSpeed: 800,
+				});
+				$(".movie-item").hover(
+					function () {
+						$(this).find("img").css("filter", "brightness(0.7)"); // dim on hover
+					},
+					function () {
+						$(this).find("img").css("filter", "brightness(1)"); // reset on leave
+					}
+				);
+			});
+			function goToGenrePage(select) {
+				const value = select.value;
+				if (value) window.location.href = value;
+			}
+		</script>
+	</body>
+</html>

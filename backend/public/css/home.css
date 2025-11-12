@@ -835,6 +835,7 @@ select:hover {
 	padding: 10px 13px;
 	font-size: 22px;
 	cursor: pointer;
+	z-index: 10;
 	box-shadow: 0 0 10px var(--main-color);
 	transition: all 0.3s ease;
 }

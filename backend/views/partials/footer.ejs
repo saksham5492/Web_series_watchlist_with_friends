@@ -1,0 +1,315 @@
+<!-- FOOTER --><link
+	rel="shortcut icon"
+	href="/Images/Logo/Title.jpeg"
+	type="image/x-icon"
+/>
+<link
+	href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+	rel="stylesheet"
+/>
+
+<!-- Owl Carousel CSS -->
+<
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+/>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+/>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<!-- Fonts & Icons -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+	rel="stylesheet"
+/>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<style>
+	/* ====== FOOTER ====== */
+	@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+	:root {
+		--main-color: #c0392b;
+		--text-color: #ffffff;
+	} /* ===== GLOBAL RESET ===== */
+	.footer {
+		background: #000;
+		color: #fff;
+		padding: 60px 5%;
+		position: relative;
+		font-family: "Poppins", sans-serif;
+	}
+
+	/* Divider lines */
+	.footer-hr {
+		border: none;
+		height: 1px;
+		background: rgba(255, 255, 255, 0.15);
+		margin: 20px 0;
+	}
+
+	/* Layout */
+	.footer-content {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		align-items: flex-start;
+		gap: 40px;
+		text-align: center;
+	}
+
+	.logo {
+		font-size: 1.8rem; /* all letters same size */
+		font-weight: 900;
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		color: #ffffff; /* default text color white */
+	}
+	.logo i {
+		font-size: 2rem; /* icon size */
+		color: var(--main-color); /* red icon */
+		margin-right: 0.3rem; /* small space between icon and text */
+	}
+	.logo .logo-e {
+		color: var(--main-color); /* only "E" in red */
+	}
+	/* Headings */
+	.footer-heading {
+		color: white;
+		font-size: 20px;
+		font-weight: 600;
+		margin-bottom: 15px;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		position: relative;
+	}
+
+	/* Animated underline under heading */
+	.footer-heading::after {
+		content: "";
+		display: block;
+		width: 40px;
+		height: 2px;
+		background: var(--main-color);
+		margin: 8px auto 0;
+		border-radius: 2px;
+		transition: width 0.4s ease;
+	}
+
+	.footer-heading:hover::after {
+		width: 80px;
+	}
+
+	/* Links */
+	.footer-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.footer-list li {
+		margin: 8px 0;
+	}
+
+	.footer-list a {
+		color: var(--main-color);
+		text-decoration: none;
+		font-size: 15px;
+		font-weight: 500;
+		transition: all 0.3s ease;
+	}
+
+	.footer-list a:hover {
+		color: #fff;
+		text-shadow: 0 0 8px var(--main-color);
+		transform: translateY(-2px);
+	}
+
+	/* Social icons */
+	.footer-icons {
+		display: flex;
+		justify-content: center;
+		gap: 18px;
+		margin-top: 10px;
+	}
+
+	.footer-icons a {
+		color: var(--main-color);
+		font-size: 22px;
+		transition: all 0.3s ease;
+	}
+
+	.footer-icons a:hover {
+		color: #fff;
+		text-shadow: 0 0 10px var(--main-color);
+		transform: scale(1.2);
+	}
+
+	/* Contact button - same as hero watchlist button */
+	.footer-contact-button {
+		position: relative;
+		overflow: hidden;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		background: transparent;
+		color: #fff;
+		padding: 6px 18px;
+		border: none;
+		border-radius: 6px;
+		font-weight: 600;
+		text-decoration: none;
+		margin-top: 15px;
+		transition: color 0.4s ease, transform 0.3s ease;
+		z-index: 1;
+	}
+
+	.footer-contact-button::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 50%;
+		height: 100%;
+		background-color: rgba(192, 57, 43, 0.9);
+		transition: width 0.6s ease;
+		z-index: -1;
+	}
+
+	.footer-contact-button:hover::before {
+		width: 100%;
+	}
+
+	.footer-contact-button:hover {
+		transform: scale(1.05);
+		color: #fff;
+		text-shadow: 0 0 10px var(--main-color);
+	}
+
+	/* Scroll to top */
+	#scrollToTopButton {
+		position: fixed;
+		bottom: 25px;
+		right: 25px;
+		background: var(--main-color);
+		color: #fff;
+		border: none;
+		border-radius: 50%;
+		padding: 10px 13px;
+		font-size: 22px;
+		cursor: pointer;
+		z-index: 10;
+		box-shadow: 0 0 10px var(--main-color);
+		transition: all 0.3s ease;
+	}
+
+	#scrollToTopButton:hover {
+		transform: scale(1.15);
+		box-shadow: 0 0 15px var(--main-color);
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.footer-content {
+			flex-direction: column;
+			text-align: center;
+		}
+	}
+</style>
+<footer class="footer">
+	<hr class="footer-hr" />
+	<div class="footer-content">
+		<!-- Left -->
+		<div class="nav-left">
+			<a href="#" class="logo">
+				<i class="bx bx-movie-play bx-tada main-color"></i>
+				BING<span class="logo-e">E</span>SYNC
+			</a>
+		</div>
+
+		<!-- Follow Us -->
+		<div class="footer-middle">
+			<h2 class="footer-heading">Follow Us</h2>
+			<div class="footer-icons">
+				<a href="https://facebook.com" target="_blank"
+					><i class="fab fa-facebook-f"></i
+				></a>
+				<a href="https://twitter.com" target="_blank"
+					><i class="fab fa-twitter"></i
+				></a>
+				<a href="https://linkedin.com" target="_blank"
+					><i class="fab fa-linkedin"></i
+				></a>
+				<a href="https://instagram.com" target="_blank"
+					><i class="fab fa-instagram"></i
+				></a>
+				<a href="https://github.com" target="_blank"
+					><i class="fab fa-github"></i
+				></a>
+			</div>
+		</div>
+
+		<!-- Services -->
+		<div class="footer-middle">
+			<h2 class="footer-heading">Services</h2>
+			<ul class="footer-list">
+				<li><a href="/watchlist/home">Enjoy Latest Movies</a></li>
+				<li><a href="/watchlist/web-series">Watch Web-Series</a></li>
+				<li><a href="/watchlist/kids">Everything for Kids</a></li>
+				<li><a href="/watchlist/news">Coming Soon</a></li>
+				<li><a href="/watchlist/premium">Get Premium Subscription</a></li>
+				<li><a href="/watchlist/faq">FAQ</a></li>
+			</ul>
+		</div>
+
+		<!-- Try Our App -->
+		<div class="footer-middle">
+			<h2 class="footer-heading">Try Our App</h2>
+			<div class="footer-icons">
+				<a href="#"><i class="fab fa-google-play"></i></a>
+				<a href="#"><i class="fab fa-app-store-ios"></i></a>
+			</div>
+		</div>
+
+		<!-- Contact -->
+		<div class="footer-right">
+			<h2 class="footer-heading">Contact Us</h2>
+			<p class="footer-bottom-tagline">Feel free to contact us.</p>
+			<a href="/watchlist/contact" class="footer-contact-button">Contact</a>
+		</div>
+	</div>
+
+	<hr class="footer-hr" />
+
+	<!-- Scroll to Top Button -->
+	<button id="scrollToTopButton" title="Go to top">
+		<i class="fa fa-angle-double-up"></i>
+	</button>
+</footer>
+
+<script>
+	const scrollToTopButton = document.getElementById("scrollToTopButton");
+	window.onscroll = function () {
+		if (
+			document.body.scrollTop > 100 ||
+			document.documentElement.scrollTop > 100
+		) {
+			scrollToTopButton.style.display = "block";
+		} else {
+			scrollToTopButton.style.display = "none";
+		}
+	};
+	scrollToTopButton.onclick = function () {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	};
+</script>

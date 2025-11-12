@@ -1,190 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= series.title %> | BingeSync</title>
-  <link rel="stylesheet" href="/css/series.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-</head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title><%= series.title %> | BingeSync</title>
+		<link rel="stylesheet" href="/css/series.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+	</head>
 
-<body>
-  <div class="movie-page">
-    <!-- ===== HERO SECTION ===== -->
-    <section class="hero">
-      <div class="overlay"></div>
-      <img src="<%= series.poster_url %>" class="bg-image" alt="<%= series.title %>" />
+	<body>
+		<!-- Navbar -->
+		<%- include('../partials/navbar') %>
 
-      <div class="hero-content">
-        <img src="<%= series.poster_url %>" class="poster" alt="poster" />
+		<div class="movie-page">
+			<!-- ===== HERO SECTION ===== -->
+			<section class="hero">
+				<div class="overlay"></div>
+				<img
+					src="<%= series.poster_url %>"
+					class="bg-image"
+					alt="<%= series.title %>"
+				/>
 
-        <div class="info">
-          <h1>
-            <%= series.title %>
-            <span class="tag"><%= series.age_rating || '16+' %></span>
-          </h1>
+				<div class="hero-content">
+					<img src="<%= series.poster_url %>" class="poster" alt="poster" />
 
-          <p class="meta">
-            <%= series.genre_name %> • 
-            <%= series.series_rating ? parseFloat(series.series_rating).toFixed(1) : "8.0" %>
-          </p>
+					<div class="info">
+						<h1>
+							<%= series.title %>
+							<span class="tag"><%= series.age_rating || '16+' %></span>
+						</h1>
 
-          <p class="desc"><%= series.summary %></p>
+						<p class="meta">
+							<%= series.genre_name %> • <%= series.series_rating ?
+							parseFloat(series.series_rating).toFixed(1) : "8.0" %>
+						</p>
 
-          <div class="buttons">
-            <button class="play-btn"><i class="fa fa-play"></i> Watch Trailer</button>
-            <button class="watchlist-btn"><i class="fa fa-plus"></i> Add to Watchlist</button>
-          </div>
-        </div>
-      </div>
-    </section>
+						<p class="desc"><%= series.summary %></p>
 
-    <!-- ===== SEASONS & EPISODES ===== -->
-    <section class="series-section">
-      <h2>Seasons & Episodes</h2>
-      <% if (series.seasons && series.seasons.length > 0) { %>
-        <% series.seasons.forEach((season, index) => { %>
-          <div class="season-block">
-            <div class="season-header" data-season="<%= index %>">
-              <span class="season-toggle" id="toggle-<%= index %>">+</span>
-              <h3>Season <%= season.number %></h3>
-            </div>
-            <div class="episodes" id="episodes-<%= index %>">
-              <% if (season.episodes && season.episodes.length > 0) { %>
-                <% season.episodes.forEach((ep) => { %>
-                  <div class="episode-card">
-                    <h4>Episode <%= ep.episode_number %>: <%= ep.episode_title %></h4>
-                    
-                  </div>
-                <% }) %>
-              <% } else { %>
-                <p class="no-episodes">No episodes available for this season.</p>
-              <% } %>
-            </div>
-          </div>
-        <% }) %>
-      <% } else { %>
-        <p>No seasons available for this series.</p>
-      <% } %>
-    </section>
+						<div class="buttons">
+							<button class="play-btn">
+								<i class="fa fa-play"></i> Watch Trailer
+							</button>
+							<button class="watchlist-btn">
+								<i class="fa fa-plus"></i> Add to Watchlist
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
 
-    <!-- ===== RECOMMENDED ===== -->
-    <section class="recommended">
-      <h2>Recommended For You</h2>
-      <div class="recommendation-slider">
-        <% recommended.forEach((rec) => { %>
-          <div class="netflix-card">
-            <a href="/watchlist/series/<%= rec.id %>">
-              <div class="card-image">
-                <img src="<%= rec.poster_url %>" alt="<%= rec.title %>" />
-                <div class="overlay"></div>
-              </div>
-              <div class="card-info">
-                <h3 class="title"><%= rec.title %></h3>
-                <p class="meta">
-                  <%= rec.genre_name || "Drama" %> • 
-                  <%= rec.series_rating ? parseFloat(rec.series_rating).toFixed(1) : "8.0" %>
-                </p>
-              </div>
-            </a>
-          </div>
-        <% }) %>
-      </div>
-    </section>
-  </div>
+			<!-- ===== SEASONS & EPISODES ===== -->
+			<section class="series-section">
+				<h2>Seasons & Episodes</h2>
+				<% if (series.seasons && series.seasons.length > 0) { %> <%
+				series.seasons.forEach((season, index) => { %>
+				<div class="season-block">
+					<div class="season-header" data-season="<%= index %>">
+						<span class="season-toggle" id="toggle-<%= index %>">+</span>
+						<h3>Season <%= season.number %></h3>
+					</div>
+					<div class="episodes" id="episodes-<%= index %>">
+						<% if (season.episodes && season.episodes.length > 0) { %> <%
+						season.episodes.forEach((ep) => { %>
+						<div class="episode-card">
+							<h4>Episode <%= ep.episode_number %>: <%= ep.episode_title %></h4>
+						</div>
+						<% }) %> <% } else { %>
+						<p class="no-episodes">No episodes available for this season.</p>
+						<% } %>
+					</div>
+				</div>
+				<% }) %> <% } else { %>
+				<p>No seasons available for this series.</p>
+				<% } %>
+			</section>
 
-  <!-- ===== TRAILER MODAL ===== -->
-  <div id="trailerModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeTrailer()">&times;</span>
-      <iframe
-        id="trailerFrame"
-        width="800" height="450"
-        src=""
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </div>
+			<!-- ===== RECOMMENDED ===== -->
+			<section class="recommended">
+				<h2>Recommended For You</h2>
+				<div class="recommendation-slider">
+					<% recommended.forEach((rec) => { %>
+					<div class="netflix-card">
+						<a href="/watchlist/series/<%= rec.id %>">
+							<div class="card-image">
+								<img src="<%= rec.poster_url %>" alt="<%= rec.title %>" />
+								<div class="overlay"></div>
+							</div>
+							<div class="card-info">
+								<h3 class="title"><%= rec.title %></h3>
+								<p class="meta">
+									<%= rec.genre_name || "Drama" %> • <%= rec.series_rating ?
+									parseFloat(rec.series_rating).toFixed(1) : "8.0" %>
+								</p>
+							</div>
+						</a>
+					</div>
+					<% }) %>
+				</div>
+			</section>
+		</div>
 
-  <script>
-    const rawURL = "<%= series.trailer_url %>";
+		<!-- ===== TRAILER MODAL ===== -->
+		<div id="trailerModal" class="modal">
+			<div class="modal-content">
+				<span class="close" onclick="closeTrailer()">&times;</span>
+				<iframe
+					id="trailerFrame"
+					width="800"
+					height="450"
+					src=""
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen
+				>
+				</iframe>
+			</div>
+		</div>
 
-    function getEmbedURL(url) {
-      if (!url) return "";
-      if (url.includes("watch?v=")) return url.replace("watch?v=", "embed/");
-      if (url.includes("youtu.be/")) return url.replace("youtu.be/", "www.youtube.com/embed/");
-      return url;
-    }
+		<!-- Footer -->
+		<%- include('../partials/footer') %>
 
-    document.querySelector(".play-btn").addEventListener("click", () => {
-      const embedURL = getEmbedURL(rawURL);
-      openTrailer(embedURL);
-    });
+		<script>
+			const rawURL = "<%= series.trailer_url %>";
 
-    function openTrailer(url) {
-      const frame = document.getElementById("trailerFrame");
-      frame.src = url + "?autoplay=1";
-      document.getElementById("trailerModal").style.display = "flex";
-    }
+			function getEmbedURL(url) {
+				if (!url) return "";
+				if (url.includes("watch?v=")) return url.replace("watch?v=", "embed/");
+				if (url.includes("youtu.be/"))
+					return url.replace("youtu.be/", "www.youtube.com/embed/");
+				return url;
+			}
 
-    function closeTrailer() {
-      const modal = document.getElementById("trailerModal");
-      const frame = document.getElementById("trailerFrame");
-      frame.src = "";
-      modal.style.display = "none";
-    }
+			document.querySelector(".play-btn").addEventListener("click", () => {
+				const embedURL = getEmbedURL(rawURL);
+				openTrailer(embedURL);
+			});
 
-    window.onclick = function (event) {
-      const modal = document.getElementById("trailerModal");
-      if (event.target === modal) closeTrailer();
-    };
+			function openTrailer(url) {
+				const frame = document.getElementById("trailerFrame");
+				frame.src = url + "?autoplay=1";
+				document.getElementById("trailerModal").style.display = "flex";
+			}
 
-    // Toggle season episodes
-    document.addEventListener('DOMContentLoaded', function() {
-      const seasonHeaders = document.querySelectorAll('.season-header');
-      
-      seasonHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-          const index = this.getAttribute('data-season');
-          const episodes = document.getElementById(`episodes-${index}`);
-          const toggle = document.getElementById(`toggle-${index}`);
-          
-          episodes.classList.toggle('show');
-          toggle.classList.toggle('expanded');
-        });
-      });
-    });
+			function closeTrailer() {
+				const modal = document.getElementById("trailerModal");
+				const frame = document.getElementById("trailerFrame");
+				frame.src = "";
+				modal.style.display = "none";
+			}
 
-    
-  document.querySelector('.watchlist-btn').addEventListener('click', async () => {
-    const seriesId = "<%= series.series_id %>";
-    try {
-      const res = await fetch('/watchlist/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ series_id: seriesId })
-      });
+			window.onclick = function (event) {
+				const modal = document.getElementById("trailerModal");
+				if (event.target === modal) closeTrailer();
+			};
 
-      const data = await res.json();
+			// Toggle season episodes
+			document.addEventListener("DOMContentLoaded", function () {
+				const seasonHeaders = document.querySelectorAll(".season-header");
 
-      // Create a temporary popup message
-      const msgBox = document.createElement('div');
-      msgBox.classList.add('popup-msg');
-      msgBox.innerText = data.message || 'Something went wrong!';
-      document.body.appendChild(msgBox);
+				seasonHeaders.forEach((header) => {
+					header.addEventListener("click", function () {
+						const index = this.getAttribute("data-season");
+						const episodes = document.getElementById(`episodes-${index}`);
+						const toggle = document.getElementById(`toggle-${index}`);
 
-      // Remove popup after 2.5 seconds
-      setTimeout(() => msgBox.remove(), 2500);
-    } catch (err) {
-      console.error('Error adding to watchlist:', err);
-    }
-  });
+						episodes.classList.toggle("show");
+						toggle.classList.toggle("expanded");
+					});
+				});
+			});
 
+			document
+				.querySelector(".watchlist-btn")
+				.addEventListener("click", async () => {
+					const seriesId = "<%= series.series_id %>";
+					try {
+						const res = await fetch("/watchlist/add", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ series_id: seriesId }),
+						});
 
-  </script>
-</body>
+						const data = await res.json();
+
+						// Create a temporary popup message
+						const msgBox = document.createElement("div");
+						msgBox.classList.add("popup-msg");
+						msgBox.innerText = data.message || "Something went wrong!";
+						document.body.appendChild(msgBox);
+
+						// Remove popup after 2.5 seconds
+						setTimeout(() => msgBox.remove(), 2500);
+					} catch (err) {
+						console.error("Error adding to watchlist:", err);
+					}
+				});
+		</script>
+	</body>
 </html>
