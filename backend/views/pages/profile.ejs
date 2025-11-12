@@ -22,10 +22,7 @@
 				<div class="profile-details">
 					<h2 class="user-name"><%= user.name %></h2>
 					<p class="user-bio">Movie lover • Tech enthusiast • Dreamer</p>
-					<div class="stats">
-						<div><span>45</span> Friends</div>
-						<div><span>18</span> Watched</div>
-					</div>
+					
 				</div>
 				<button class="btn-edit">
 					<i class="fa fa-edit"></i> Edit Profile
@@ -86,10 +83,32 @@
 				<div class="details-grid">
 					<div class="detail-item"><span>Name:</span> <%= user.name %></div>
 					<div class="detail-item"><span>Email:</span> <%= user.email %></div>
-					<div class="detail-item"><span>Joined:</span> January 2024</div>
+					
 				</div>
 			</div>
 		</section>
+		<!-- ================= EDIT PROFILE MODAL ================= -->
+<div id="editModal" class="edit-modal">
+  <div class="edit-box">
+    <h3>Edit Profile</h3>
+    <form id="editForm" action="/profile/update" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" value="<%= user.name %>" required />
+
+      <label>Email:</label>
+      <input type="email" name="email" value="<%= user.email %>" required />
+
+      <label>Bio:</label>
+      <textarea name="bio"><%= user.bio || '' %></textarea>
+
+      <div class="edit-actions">
+        <button type="button" class="cancel-btn" id="cancelEdit">Cancel</button>
+        <button type="submit" class="save-btn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
 		<script>
 			const tabButtons = document.querySelectorAll(".tab-btn");
@@ -105,6 +124,19 @@
 					});
 				});
 			});
+			
+  const editBtn = document.querySelector(".btn-edit");
+  const editModal = document.getElementById("editModal");
+  const cancelEdit = document.getElementById("cancelEdit");
+
+  editBtn.addEventListener("click", () => {
+    editModal.classList.add("show");
+  });
+
+  cancelEdit.addEventListener("click", () => {
+    editModal.classList.remove("show");
+  });
+
 		</script>
 	</body>
 </html>

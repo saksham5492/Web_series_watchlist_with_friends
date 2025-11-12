@@ -1,57 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Friend Requests | BingeSync</title>
-  <link rel="stylesheet" href="/css/friend-requests.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Pending Friend Requests</h1>
-      <nav>
-        <a href="/watchlist/friends" class="nav-btn">Find Friends</a>
-        <a href="/watchlist/friends/list" class="nav-btn">My Friends</a>
-        <a href="/watchlist/home" class="nav-btn">Home</a>
-      </nav>
-    </header>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Friend Requests | BingeSync</title>
+		<link rel="stylesheet" href="/css/friend-requests.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<style>
+			/* Toast styles */
+			#toast {
+				visibility: hidden;
+				min-width: 250px;
+				margin-left: -125px;
+				background-color: #333;
+				color: #fff;
+				text-align: center;
+				border-radius: 8px;
+				padding: 16px;
+				position: fixed;
+				z-index: 1000;
+				left: 50%;
+				bottom: 30px;
+				font-size: 16px;
+				opacity: 0;
+				transition: opacity 0.5s, bottom 0.5s;
+			}
 
-    <% if (requests.length === 0) { %>
-      <p class="empty">🎉 You have no pending friend requests!</p>
-    <% } else { %>
-      <div class="cards">
-        <% requests.forEach(req => { %>
-          <div class="card">
-            <div class="avatar"><i class="fa-solid fa-user"></i></div>
-            <div class="info">
-              <h3><%= req.name %></h3>
-              <p><%= req.email %></p>
-            </div>
-            <button class="accept-btn" data-id="<%= req.id %>">
-              <i class="fa fa-check"></i> Accept
-            </button>
-          </div>
-        <% }) %>
-      </div>
-    <% } %>
-  </div>
+			#toast.show {
+				visibility: visible;
+				opacity: 1;
+				bottom: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1>Pending Friend Requests</h1>
+				<nav>
+					<a href="/watchlist/friends" class="nav-btn">Find Friends</a>
+					<a href="/watchlist/friends/list" class="nav-btn">My Friends</a>
+					<a href="/watchlist/home" class="nav-btn">Home</a>
+				</nav>
+			</header>
 
-  <script>
-    document.querySelectorAll('.accept-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const senderId = btn.dataset.id;
-        const res = await fetch('/watchlist/friends/accept', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sender_id: senderId })
-        });
-        const data = await res.json();
-        alert(data.message);
-        location.reload();
-      });
-    });
-  </script>
-</body>
+			<% if (requests.length === 0) { %>
+			<p class="empty">🎉 You have no pending friend requests!</p>
+			<% } else { %>
+			<div class="cards">
+				<% requests.forEach(req => { %>
+				<div class="card">
+					<div class="avatar"><i class="fa-solid fa-user"></i></div>
+					<div class="info">
+						<h3><%= req.name %></h3>
+						<p><%= req.email %></p>
+					</div>
+					<button class="accept-btn" data-id="<%= req.id %>">
+						<i class="fa fa-check"></i> Accept
+					</button>
+				</div>
+				<% }) %>
+			</div>
+			<% } %>
+		</div>
+
+		<!-- Toast element -->
+		<div id="toast"></div>
+
+		<script>
+			function showToast(message) {
+				const toast = document.getElementById("toast");
+				toast.textContent = message;
+				toast.className = "show";
+				setTimeout(() => {
+					toast.className = toast.className.replace("show", "");
+				}, 3000); // visible for 3 seconds
+			}
+
+			document.querySelectorAll(".accept-btn").forEach((btn) => {
+				btn.addEventListener("click", async () => {
+					const senderId = btn.dataset.id;
+					try {
+						const res = await fetch("/watchlist/friends/accept", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ sender_id: senderId }),
+						});
+						const data = await res.json();
+						showToast(data.message); // show toast instead of alert
+						setTimeout(() => location.reload(), 1000); // reload after 1 second
+					} catch (err) {
+						showToast("Something went wrong!");
+					}
+				});
+			});
+		</script>
+	</body>
 </html>

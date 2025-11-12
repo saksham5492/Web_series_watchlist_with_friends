@@ -37,7 +37,7 @@ const connection = mysql.createConnection({
 	host: "localhost",
 	user: "root",
 	database: "watchlist",
-	password: "Abcd@1234",
+	password: "Tejaswi49!",
 	multipleStatements: true,
 });
 
@@ -471,20 +471,60 @@ app.get("/watchlist/series/:id", (req, res) => {
 });
 
 // ===================== PROFILE PAGE =====================
-app.get("/watchlist/profile", (req, res) => {
+// ===================== PROFILE PAGE =====================
+app.get("/watchlist/profile", async (req, res) => {
 	try {
-		// Example: If you have session-based auth
-		const user = req.session?.user || {
-			name: "Guest User",
-			email: "guest@example.com",
-		};
+		const user = req.session?.user;
+		if (!user) {
+			return res.redirect("/watchlist/login");
+		}
 
-		res.render("pages/profile", { user });
+		// Fetch user details
+		const [userRows] = await connection
+			.promise()
+			.query(
+				"SELECT id, name, email  FROM user WHERE id = ?",
+				[user.id]
+			);
+		const userData = userRows[0] || user;
+
+		// Fetch friends (both sender and receiver where status = 'accepted')
+		const [friends] = await connection.promise().query(
+			`
+			SELECT u.id, u.name 
+			FROM friendships f
+			JOIN user u 
+				ON (u.id = f.sender_id OR u.id = f.receiver_id)
+			WHERE (f.sender_id = ? OR f.receiver_id = ?)
+			  AND f.status = 'accepted'
+			  AND u.id != ?
+			`,
+			[user.id, user.id, user.id]
+		);
+
+		// Fetch watchlist count
+		const [countRows] = await connection
+			.promise()
+			.query(
+				"SELECT COUNT(*) AS count FROM watchlist WHERE user_id = ?",
+				[user.id]
+			);
+		const watchlistCount = countRows[0]?.count || 0;
+
+		// Render profile page
+		res.render("pages/profile", {
+			user: userData,
+			friends,
+			watchlistCount,
+		});
 	} catch (err) {
-		console.error("Error rendering profile:", err);
+		console.error("❌ Error rendering profile:", err);
 		res.status(500).send("Server Error");
 	}
 });
+
+
+
 
 // LIVE search results API (for dropdown)
 app.get("/api/search", (req, res) => {
