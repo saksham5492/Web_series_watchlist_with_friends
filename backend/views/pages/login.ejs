@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+  
   <% if (message) { %>
     <div class="verification-message" id="verificationMsg">
       <%= message %>
@@ -14,9 +16,18 @@
   <% } %>
 
   <div class="wrapper">
-    <form action="/watchlist/login" method="POST">
-      <h2>Login</h2>
 
+    <div class="nav-left">
+      <a href="#" class="logo">
+          <i class="bx bx-movie-play bx-tada main-color"></i>
+          BING<span class="logo-e">E</span>SYNC
+      </a>
+    </div>
+    
+    <h2>Login</h2>
+
+    <form action="/watchlist/login" method="POST">
+      
       <div class="input-field">
         <input type="text" name="email" required>
         <label>Enter your email</label>
@@ -46,7 +57,7 @@
   <script>
     const msg = document.getElementById("verificationMsg");
     if (msg) {
-      setTimeout(() => msg.remove(), 4000); // fade after 4 sec
+      setTimeout(() => msg.remove(), 4000); 
     }
   </script>
 </body>
