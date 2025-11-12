@@ -294,7 +294,7 @@
 	/* ===== MODERN MINI SIDEBAR ===== */
 	.sidebar {
 		position: fixed;
-		top: 70px; /* below navbar */
+		top: 80px; /* below navbar */
 		right: -250px; /* hidden */
 		width: 220px;
 		height: 70vh;
@@ -392,7 +392,22 @@
 		text-shadow: 0 0 10px red;
 		transform: translateX(4px);
 	}
+.sidebar-menu p a {
+	font-size: 0.9rem;
+	margin: 10px 0;
+	cursor: pointer;
+	transition: color 0.3s ease, transform 0.2s ease;
+	color: #ddd;
+  text-decoration: none;
+	text-decoration: none;
+	text-align: center;
+}
 
+.sidebar-menu p a:hover {
+	color: #ff4444;
+	text-shadow: 0 0 10px red;
+	transform: translateX(4px);
+}
 	/* Responsive */
 	@media (max-width: 768px) {
 		.sidebar {

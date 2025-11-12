@@ -12,15 +12,14 @@
 	</head>
 
 	<body>
-		<!-- Navbar -->
-		<%- include('../partials/navbar') %>
-
+    <%- include('../partials/navbar') %>
+    
 		<div class="movie-page">
 			<!-- ===== HERO SECTION ===== -->
 			<section class="hero">
 				<div class="overlay"></div>
 				<img
-					src="<%= series.poster_url %>"
+					src="<%= series.landscape_poster_url %>"
 					class="bg-image"
 					alt="<%= series.title %>"
 				/>
@@ -35,11 +34,56 @@
 						</h1>
 
 						<p class="meta">
-							<%= series.genre_name %> • <%= series.series_rating ?
-							parseFloat(series.series_rating).toFixed(1) : "8.0" %>
+							<%= series.genre_name %> •
+							<span class="stars">
+								<% var rating10 = series.series_rating || 0; // rating out of 10
+								var rating5 = rating10 / 2; // convert to 5-star scale var
+								fullStars = Math.floor(rating5); var halfStar = (rating5 % 1) >=
+								0.5; %> <% for (var i = 0; i < fullStars; i++) { %>
+								<i class="fa-solid fa-star"></i>
+								<% } %> <% if (halfStar) { %>
+								<i class="fa-solid fa-star-half-stroke"></i>
+								<% } %> <% for (var i = fullStars + (halfStar ? 1 : 0); i < 5;
+								i++) { %>
+								<i class="fa-regular fa-star"></i>
+								<% } %>
+							</span>
+							<span class="rating-num"><%= (rating5).toFixed(1) %> / 5</span>
 						</p>
 
-						<p class="desc"><%= series.summary %></p>
+						<p class="desc">
+							<%= series.summary %> Lorem ipsum dolor sit amet consectetur
+							adipisicing elit. Quis velit accusantium sequi modi possimus animi
+							voluptatum, iure, impedit vitae magni dolor nemo officia? Soluta
+							maiores deserunt commodi.
+						</p>
+
+						<!-- ===== DROPDOWNS ===== -->
+						<div class="dropdowns">
+							<div class="dropdown">
+								<button class="dropdown-btn">
+									Seasons <i class="fa fa-chevron-down"></i>
+								</button>
+								<div class="dropdown-content1">
+									<% if (series.seasons) { %> <% series.seasons.forEach((s) => {
+									%>
+									<a href="#">Season <%= s.number %></a>
+									<% }) %> <% } %>
+								</div>
+							</div>
+
+							<div class="dropdown">
+								<button class="dropdown-btn">
+									Episodes <i class="fa fa-chevron-down"></i>
+								</button>
+								<div class="dropdown-content">
+									<% if (series.episodes) { %> <% series.episodes.forEach((e) =>
+									{ %>
+									<a href="#">Episode <%= e.number %>: <%= e.title %></a>
+									<% }) %> <% } %>
+								</div>
+							</div>
+						</div>
 
 						<div class="buttons">
 							<button class="play-btn">
@@ -53,56 +97,35 @@
 				</div>
 			</section>
 
-			<!-- ===== SEASONS & EPISODES ===== -->
-			<section class="series-section">
-				<h2>Seasons & Episodes</h2>
-				<% if (series.seasons && series.seasons.length > 0) { %> <%
-				series.seasons.forEach((season, index) => { %>
-				<div class="season-block">
-					<div class="season-header" data-season="<%= index %>">
-						<span class="season-toggle" id="toggle-<%= index %>">+</span>
-						<h3>Season <%= season.number %></h3>
-					</div>
-					<div class="episodes" id="episodes-<%= index %>">
-						<% if (season.episodes && season.episodes.length > 0) { %> <%
-						season.episodes.forEach((ep) => { %>
-						<div class="episode-card">
-							<h4>Episode <%= ep.episode_number %>: <%= ep.episode_title %></h4>
-						</div>
-						<% }) %> <% } else { %>
-						<p class="no-episodes">No episodes available for this season.</p>
-						<% } %>
-					</div>
-				</div>
-				<% }) %> <% } else { %>
-				<p>No seasons available for this series.</p>
-				<% } %>
-			</section>
-
 			<!-- ===== RECOMMENDED ===== -->
 			<section class="recommended">
-				<h2>Recommended For You</h2>
-				<div class="recommendation-slider">
-					<% recommended.forEach((rec) => { %>
-					<div class="netflix-card">
-						<a href="/watchlist/series/<%= rec.id %>">
-							<div class="card-image">
-								<img src="<%= rec.poster_url %>" alt="<%= rec.title %>" />
-								<div class="overlay"></div>
-							</div>
-							<div class="card-info">
-								<h3 class="title"><%= rec.title %></h3>
-								<p class="meta">
-									<%= rec.genre_name || "Drama" %> • <%= rec.series_rating ?
-									parseFloat(rec.series_rating).toFixed(1) : "8.0" %>
-								</p>
-							</div>
-						</a>
-					</div>
-					<% }) %>
-				</div>
-			</section>
-		</div>
+  <div class="container">
+    <div class="section-header">Recommended For You</div>
+
+    <!-- Single horizontal row (no arrow buttons) -->
+    <div class="genre-carousel-wrapper no-buttons">
+      <div class="recommendation-row genre-carousel">
+        <% recommended.forEach((rec) => { %>
+        <a href="/watchlist/series/<%= rec.series_id || rec.id %>" class="movie-item">
+          <img src="<%= rec.poster_url %>" alt="<%= rec.title %>" />
+          <div class="movie-item-content">
+            <div class="movie-item-title"><%= rec.title %></div>
+            <div class="movie-infos">
+              <div class="movie-info">
+                <i class="fa-solid fa-star"></i>
+                <span><%= rec.series_rating ? parseFloat(rec.series_rating).toFixed(1) : "N/A" %></span>
+              </div>
+              <div class="movie-info"><span>HD</span></div>
+              <div class="movie-info"><span>16+</span></div>
+            </div>
+          </div>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 		<!-- ===== TRAILER MODAL ===== -->
 		<div id="trailerModal" class="modal">
@@ -121,10 +144,9 @@
 			</div>
 		</div>
 
-		<!-- Footer -->
-		<%- include('../partials/footer') %>
-
+		<!-- ===== SCRIPTS ===== -->
 		<script>
+			// ===== TRAILER MODAL =====
 			const rawURL = "<%= series.trailer_url %>";
 
 			function getEmbedURL(url) {
@@ -157,50 +179,6 @@
 				const modal = document.getElementById("trailerModal");
 				if (event.target === modal) closeTrailer();
 			};
-
-			// Toggle season episodes
-			document.addEventListener("DOMContentLoaded", function () {
-				const seasonHeaders = document.querySelectorAll(".season-header");
-
-				seasonHeaders.forEach((header) => {
-					header.addEventListener("click", function () {
-						const index = this.getAttribute("data-season");
-						const episodes = document.getElementById(`episodes-${index}`);
-						const toggle = document.getElementById(`toggle-${index}`);
-
-						episodes.classList.toggle("show");
-						toggle.classList.toggle("expanded");
-					});
-				});
-			});
-
-			document
-				.querySelector(".watchlist-btn")
-				.addEventListener("click", async () => {
-					const seriesId = "<%= series.series_id %>";
-					try {
-						const res = await fetch("/watchlist/add", {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify({ series_id: seriesId }),
-						});
-
-						const data = await res.json();
-
-						// Create a temporary popup message
-						const msgBox = document.createElement("div");
-						msgBox.classList.add("popup-msg");
-						msgBox.innerText = data.message || "Something went wrong!";
-						document.body.appendChild(msgBox);
-
-						// Remove popup after 2.5 seconds
-						setTimeout(() => msgBox.remove(), 2500);
-					} catch (err) {
-						console.error("Error adding to watchlist:", err);
-					}
-				});
 		</script>
 	</body>
 </html>

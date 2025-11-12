@@ -1,825 +1,490 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  background: #0a0a0a;
-  color: #fff;
-  overflow-x: hidden;
+	font-family: "Poppins", sans-serif;
+	background: #0a0a0a;
+	color: #fff;
+	overflow-x: hidden;
 }
 
-/* Hero Section */
 .hero {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	color: white;
+	height: 100vh;
+	padding: 80px 5%;
+	background: linear-gradient(
+			to right,
+			rgba(0, 0, 0, 1),
+			rgba(0, 0, 0, 0.85),
+			rgba(0, 0, 0, 0.7),
+			transparent
+		),
+		url("YOUR_IMAGE_URL_HERE") center/cover no-repeat;
 }
 
 .bg-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.4);
-  z-index: -1;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	filter: brightness(0.5);
+	z-index: -1;
 }
 
 .overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent 60%);
-  z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		to right,
+		rgba(0, 0, 0, 1) 0%,
+		rgba(0, 0, 0, 0.95) 20%,
+		rgba(0, 0, 0, 0.85) 40%,
+		rgba(0, 0, 0, 0.6) 60%,
+		rgba(0, 0, 0, 0.3) 80%,
+		transparent 100%
+	);
 }
 
 .hero-content {
-  display: flex;
-  align-items: center;
-  gap: 60px;
-  z-index: 2;
-  padding: 0 120px;
+	display: flex;
+	align-items: center;
+	gap: 60px;
+	z-index: 2;
+	padding: 0 120px;
 }
 
 .poster {
-  width: 250px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+	width: 250px;
+	border-radius: 12px;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
 }
 
 .info {
-  max-width: 700px;
+	max-width: 700px;
 }
 
 .info h1 {
-  font-size: 48px;
-  font-weight: 700;
+	font-size: 48px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
 }
 
 .tag {
-  background: #ffcc00;
-  color: #000;
-  font-size: 16px;
-  padding: 3px 8px;
-  border-radius: 5px;
-  margin-left: 10px;
+	background: #ffcc00;
+	color: #000;
+	font-size: 16px;
+	padding: 3px 8px;
+	border-radius: 5px;
+	margin-left: 10px;
 }
 
 .meta {
-  color: #bbb;
-  margin: 5px 0 10px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 1rem;
+	color: #ffcc00;
+}
+
+.stars i {
+	color: #ffcc00;
+	margin-right: 2px;
+	font-size: 1rem;
+}
+
+.rating-num {
+	color: #fff;
+	font-weight: 600;
+	margin-left: 6px;
+}
+
+.rating {
+	color: gold;
+	margin-bottom: 15px;
 }
 
 .desc {
-  width: 90%;
-  color: #ddd;
-  margin-top: 20px;
-  line-height: 1.6;
-  font-size: 15px;
+	width: 90%;
+	color: #ddd;
+	margin-top: 20px;
+	line-height: 1.6;
+	font-size: 15px;
 }
 
-.buttons {
-  margin-top: 20px;
+/* ===== BUTTON HALF-SLIDE ANIMATION ===== */
+.buttons button {
+	position: relative;
+	overflow: hidden;
+	background: transparent; /* starts transparent */
+	color: #fff;
+	border: none;
+	padding: 6px 24px;
+	font-size: 1rem;
+	font-weight: 600;
+	margin-top: 20px;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	transition: color 0.5s ease;
+	margin-right: 10px;
+	z-index: 1;
 }
 
-.play-btn,
-.watchlist-btn {
-  padding: 14px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 600;
-  transition: 0.3s;
-  border: none;
+.buttons button::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%; /* half-fill effect */
+	height: 100%;
+	background-color: rgba(223, 44, 4, 0.943);
+	transition: width 0.6s ease;
+	z-index: -1;
 }
 
-.play-btn {
-  background: #1f80e0;
-  color: #fff;
-  margin-right: 12px;
+.buttons button:hover::before {
+	width: 100%; /* full fill on hover */
 }
 
-.play-btn:hover {
-  background: #3fa7ff;
+.buttons button:hover {
+	color: #fff;
 }
 
-.watchlist-btn {
-  background: #222;
-  border: 1px solid #444;
-  color: #fff;
+.buttons button i {
+	font-size: 1rem;
 }
 
-.watchlist-btn:hover {
-  background: #333;
+/* Optional — to differentiate the + button slightly */
+.watchlist-btn::before {
+	background-color: rgba(255, 0, 0, 0.8);
 }
 
 /* Dropdowns */
 .dropdowns {
-  margin-top: 25px;
-  display: flex;
-  gap: 20px;
-  position: relative;
-  z-index: 10;
+	margin-top: 25px;
+	display: flex;
+	gap: 20px;
 }
 
 .dropdown {
-  position: relative;
+	position: relative;
 }
 
 .dropdown-btn {
-  background: #111;
-  color: #fff;
-  border: 1px solid #333;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
+	background: #111;
+	color: #fff;
+	border: 1px solid #333;
+	padding: 10px 18px;
+	border-radius: 6px;
+	cursor: pointer;
 }
 
+/* Dropdowns */
 .dropdown-content,
 .dropdown-content1 {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: #181818;
-  border: 1px solid #333;
-  border-radius: 8px;
-  display: none;
-  flex-direction: column;
-  width: 280px;
-  z-index: 5;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: 0.3s ease;
+	position: absolute;
+	top: 0;
+	left: 105%; /* Opens to right side */
+	background: #181818;
+	border: 1px solid #333;
+	border-radius: 8px;
+	display: none;
+	flex-direction: column;
+	width: 280px;
+	z-index: 5;
+	/* REMOVE scroll behavior and max-height limits */
+	max-height: none;
+	overflow: visible;
+	scrollbar-width: none;
+	transition: 0.3s ease;
+	opacity: 0;
+	transform: translateX(-10px);
 }
 
 .dropdown:hover .dropdown-content,
 .dropdown:hover .dropdown-content1 {
-  display: flex;
-  opacity: 1;
-  transform: translateX(0);
+	display: flex;
+	opacity: 1;
+	transform: translateX(0);
 }
 
+/* Each dropdown link styling */
 .dropdown-content a,
 .dropdown-content1 a {
-  color: #ccc;
-  padding: 10px;
-  text-decoration: none;
-  border-bottom: 1px solid #222;
-  transition: 0.3s;
+	color: #ccc;
+	padding: 10px;
+	text-decoration: none;
+	border-bottom: 1px solid #222;
+	transition: 0.3s;
 }
 
 .dropdown-content a:hover,
 .dropdown-content1 a:hover {
-  background: #222;
-  color: #fff;
+	background: #222;
+	color: #fff;
 }
 
-/* Recommended Section */
+/* Recommended Slider */
 .recommended {
-  padding: 40px 60px;
-  background: #0b0b0b;
+	padding: 40px 60px;
 }
 
 .recommended h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+	font-size: 26px;
+	margin-bottom: 20px;
+	color: #fff;
 }
 
-/* Slider / Cards */
-.slider,
-.recommendation-slider {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
+.slider {
+	display: flex;
+	gap: 20px;
+	overflow-x: auto;
+	scrollbar-width: none;
 }
 
-.slider::-webkit-scrollbar,
-.recommendation-slider::-webkit-scrollbar {
-  display: none;
+.slider::-webkit-scrollbar {
+	display: none;
 }
 
-.item,
-.item.card,
-.netflix-card {
-  flex: 0 0 200px;
-  background: #111;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+.item {
+	min-width: 200px;
+	background: #1a1a1a;
+	border-radius: 10px;
+	text-align: center;
+	transition: 0.3s;
 }
 
-.item img,
-.item.card img,
-.netflix-card img,
-.card-image img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+.item img {
+	width: 100%;
+	height: 280px;
+	object-fit: cover;
+	border-radius: 10px;
 }
 
 .item p {
-  text-align: center;
-  font-size: 1rem;
-  padding: 0.8rem;
-  margin: 0;
-  background: #1a1a1a;
-  border-radius: 0 0 16px 16px;
-  transition: background 0.3s ease;
+	margin-top: 10px;
+	font-size: 15px;
 }
 
-.item:hover,
-.item.card:hover,
-.netflix-card:hover {
-  transform: translateY(-8px) scale(1.05);
+.item:hover {
+	transform: scale(1.08);
 }
 
-.item:hover img,
-.item.card:hover img,
-.netflix-card:hover img {
-  transform: scale(1.08);
-}
-
-.item:hover p {
-  background: #ff0048;
-}
-
-/* Overlay for cards */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.1));
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  padding: 1rem;
-}
-
-.item.card:hover .overlay {
-  opacity: 1;
-}
-
-.overlay-content {
-  color: #fff;
-  text-align: left;
-  animation: fadeInUp 0.4s ease forwards;
-}
-
-.overlay-content h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.overlay-content .meta {
-  font-size: 0.85rem;
-  color: #ccc;
-  margin-top: 0.3rem;
-}
-
-/* Netflix Card Info */
-.card-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-  color: #fff;
-  opacity: 0;
-  transform: translateY(30%);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.netflix-card:hover .card-info {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card-info .title {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.card-info .meta {
-  font-size: 0.85rem;
-  color: #ffcc00;
-}
-
-/* Trailer Modal (Keep full dimensions) */
+/* ===== Trailer Modal Styling ===== */
 .modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: rgba(0,0,0,0.88);
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(8px);
-  animation: fadeIn 0.4s ease-in-out;
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	background: rgba(0, 0, 0, 0.88);
+	backdrop-filter: blur(8px);
+	animation: fadeIn 0.4s ease-in-out;
+	transition: all 0.3s ease;
 }
 
 .modal-content {
-  position: relative;
-  margin: 5% auto;
-  width: 80%;
-  max-width: 900px;
-  border-radius: 16px;
-  overflow: hidden;
-  transform: scale(0.9);
-  animation: zoomIn 0.4s ease-out forwards;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
-  box-shadow: 0 0 40px rgba(255, 0, 100, 0.4), 0 0 60px rgba(255, 0, 0, 0.2);
+	position: relative;
+	margin: 5% auto;
+	width: 80%;
+	max-width: 900px;
+	border-radius: 16px;
+	overflow: hidden;
+	transform: scale(0.9);
+	animation: zoomIn 0.4s ease-out forwards;
+	background: radial-gradient(
+		circle at center,
+		rgba(255, 255, 255, 0.1) 0%,
+		rgba(0, 0, 0, 0.9) 100%
+	);
+	box-shadow: 0 0 40px rgba(255, 0, 100, 0.4), 0 0 60px rgba(255, 0, 0, 0.2);
 }
 
 .modal-content iframe {
-  width: 100%;
-  height: 60vh; /* Keep original */
-  border: none;
-  border-radius: 16px;
+	width: 100%;
+	height: 60vh;
+	border: none;
+	border-radius: 16px;
+	box-shadow: 0 0 30px rgba(255, 0, 100, 0.3);
 }
 
+/* Close Button */
 .close {
-  position: absolute;
-  top: 12px;
-  right: 22px;
-  font-size: 34px;
-  font-weight: 700;
-  color: #fff;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
-  text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+	position: absolute;
+	top: 12px;
+	right: 22px;
+	color: #fff;
+	font-size: 34px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: color 0.3s ease, transform 0.2s ease;
+	text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
 .close:hover {
-  color: #ff3c3c;
-  transform: scale(1.2);
+	color: #ff3c3c;
+	transform: scale(1.2);
 }
 
-/* Dropdown Season/Episode List */
-.season-block {
-  margin-bottom: 50px;
-  padding: 30px;
-  border-radius: 12px;
-  background: #141414;
-  box-shadow: 0 0 25px rgba(255, 0, 120, 0.1);
-}
-
-.season-block h4 {
-  color: #fff;
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.episode-list {
-  list-style: none;
-  padding-left: 10px;
-}
-
-.episode-list li {
-  color: #ccc;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-/* ===== COLLAPSIBLE SEASONS STYLES ===== */
-.season-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  cursor: pointer;
-  user-select: none;
-  padding: 10px 0;
-  transition: all 0.2s ease;
-}
-
-.season-toggle {
-  font-size: 1.5em;
-  font-weight: bold;
-  transition: transform 0.3s ease, color 0.2s ease;
-  color: #ffcc00;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 204, 0, 0.1);
-  border-radius: 6px;
-}
-
-.season-toggle.expanded {
-  transform: rotate(45deg);
-  background: rgba(255, 0, 120, 0.2);
-  color: #ff0077;
-}
-
-.season-header:hover .season-toggle {
-  background: rgba(255, 0, 120, 0.3);
-  color: #ff0077;
-}
-
-.season-header h3 {
-  margin: 0;
-  font-size: 1.4rem;
-  color: #ffcc00;
-  transition: color 0.2s ease;
-}
-
-.season-header:hover h3 {
-  color: #fff;
-}
-
-/* Episodes Container - Collapsible */
-.episodes {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out, padding 0.3s ease-out;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.episodes.show {
-  max-height: 5000px;
-  transition: max-height 0.6s ease-in, padding 0.3s ease-in;
-  padding: 25px 0 10px 0;
-}
-
-/* ===== SEASONS & EPISODES SECTION ===== */
-.series-section {
-  padding: 60px 80px;
-  background: #0b0b0b;
-  z-index: 2;
-  position: relative;
-}
-
-.series-section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 40px;
-  color: #fff;
-  border-left: 4px solid #ff0077;
-  padding-left: 12px;
-}
-
-/* Episodes Grid */
-.episode-card {
-  background: #1a1a1a;
-  border-radius: 10px;
-  padding: 16px;
-  width: 240px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.episode-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px rgba(255, 0, 120, 0.3);
-  border-color: rgba(255, 0, 120, 0.5);
-}
-
-.episode-card h4 {
-  font-size: 1rem;
-  color: #fff;
-  margin-bottom: 8px;
-}
-
-.episode-card p {
-  font-size: 0.85rem;
-  color: #bbb;
-  line-height: 1.4;
-}
-
-.no-episodes {
-  color: #aaa;
-  font-size: 0.9rem;
-  padding: 20px 0;
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
+/* ===== Animations ===== */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.85);
-    box-shadow: 0 0 0 rgba(255, 0, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 0 40px rgba(255, 0, 100, 0.4);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.85);
+		box-shadow: 0 0 0 rgba(255, 0, 0, 0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+		box-shadow: 0 0 40px rgba(255, 0, 100, 0.4);
+	}
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .hero-content { 
-    flex-direction: column; 
-    gap: 20px; 
-    padding: 0 20px; 
-  }
-  
-  .poster { 
-    width: 200px; 
-  }
-  
-  .slider, .recommendation-slider { 
-    gap: 10px; 
-  }
-  
-  .item, .item.card, .netflix-card { 
-    flex: 0 0 160px; 
-  }
-  
-  .item img, .item.card img, .card-image img { 
-    height: 220px; 
-  }
-  
-  .series-section {
-    padding: 30px 20px;
-  }
-
-  .episodes {
-    justify-content: center;
-  }
-
-  .episode-card {
-    width: 90%;
-  }
-  
-  .modal-content {
-    width: 90%;
-  }
-  
-  .modal-content iframe {
-    height: 40vh;
-  }
-}
-.popup-msg {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #00c853;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-  font-weight: 600;
-  z-index: 9999;
-  animation: fadeInOut 2.5s ease forwards;
+	.modal-content {
+		width: 90%;
+	}
+	.modal-content iframe {
+		height: 40vh;
+	}
 }
 
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translate(-50%, 20px); }
-  15% { opacity: 1; transform: translate(-50%, 0); }
-  85% { opacity: 1; transform: translate(-50%, 0); }
-  100% { opacity: 0; transform: translate(-50%, 20px); }
+/* ===== Recommended Section ===== */
+.recommended .container {
+	max-width: 1600px; /* Keeps it nicely centered on 1920px screens */
+	margin: 0 auto;
+	padding: 0 60px;
 }
 
-.delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 0, 0, 0.8);
-  border: none;
-  color: white;
-  font-size: 1rem;
-  padding: 6px 8px;
-  border-radius: 50%;
-  cursor: pointer;
-  opacity: 0;
-  transition: all 0.3s ease;
+.recommended .section-header {
+	font-size: 1.6rem;
+	font-weight: 700;
+	margin-bottom: 20px;
+	border-left: 4px solid #ff0000;
+	padding-left: 10px;
+	text-transform: uppercase;
 }
 
-.netflix-card:hover .delete-btn {
-  opacity: 1;
+/* ===== Horizontal Row with Exactly 5 Cards ===== */
+.recommendation-row {
+	display: flex;
+	justify-content: space-between; /* even spacing for 5 cards */
+	gap: 24px;
+	overflow: hidden; /* no scroll */
+	flex-wrap: nowrap;
 }
 
-.delete-btn:hover {
-  background: rgba(255, 0, 0, 1);
-  transform: scale(1.1);
+/* Each Card */
+.recommendation-row .movie-item {
+	flex: 1;
+	max-width: calc((100% - (24px * 4)) / 5); /* 5 cards with 24px gap between */
+	aspect-ratio: 3 / 4; /* maintains consistent height */
+	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
+	background: #111;
+	transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* 🧡 Toast Notification */
-.toast {
-  visibility: hidden;
-  min-width: 280px;
-  margin-left: -140px;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  text-align: center;
-  border-radius: 8px;
-  padding: 14px;
-  position: fixed;
-  left: 50%;
-  bottom: 30px;
-  font-size: 1rem;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s, bottom 0.5s;
+.recommendation-row .movie-item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-.toast.show {
-  visibility: visible;
-  opacity: 1;
-  bottom: 50px;
-}
-/* 🗑 Delete Button Overlay */
-.delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 0, 70, 0.8);
-  border: none;
-  color: white;
-  font-size: 1rem;
-  padding: 8px 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.2s ease;
-  z-index: 5;
+.recommendation-row .movie-item:hover img {
+	transform: scale(1.08);
+	filter: brightness(0.6);
 }
 
-.netflix-card:hover .delete-btn {
-  opacity: 1;
-  transform: scale(1.1);
+.recommendation-row .movie-item-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 14px 10px;
+	background: linear-gradient(
+		to top,
+		rgba(0, 0, 0, 0.95) 30%,
+		rgba(0, 0, 0, 0) 100%
+	);
+	color: #fff;
+	opacity: 0;
+	transform: translateY(20%);
+	transition: opacity 0.35s ease, transform 0.35s ease;
+	text-align: center;
 }
 
-.delete-btn:hover {
-  background: rgba(255, 0, 100, 1);
+.recommendation-row .movie-item:hover .movie-item-content {
+	opacity: 1;
+	transform: translateY(0);
 }
 
-/* Toast Notification (already included earlier) */
-.toast {
-  visibility: hidden;
-  min-width: 280px;
-  margin-left: -140px;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  text-align: center;
-  border-radius: 8px;
-  padding: 14px;
-  position: fixed;
-  left: 50%;
-  bottom: 30px;
-  font-size: 1rem;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s, bottom 0.5s;
-}
-.toast.show {
-  visibility: visible;
-  opacity: 1;
-  bottom: 50px;
+.recommendation-row .movie-item-title {
+	font-size: 1rem;
+	font-weight: 600;
+	margin-bottom: 6px;
 }
 
-/* 🗑 Delete Button Overlay */
-.delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 0, 70, 0.85);
-  border: none;
-  color: white;
-  font-size: 1rem;
-  padding: 8px 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.2s ease;
-  z-index: 5;
+.recommendation-row .movie-infos {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	font-size: 0.85rem;
+	color: #ffcc00;
+	align-items: center;
 }
 
-.netflix-card:hover .delete-btn {
-  opacity: 1;
-  transform: scale(1.1);
+/* Responsive Adjustments */
+@media (max-width: 1400px) {
+	.recommendation-row {
+		gap: 20px;
+	}
+	.recommendation-row .movie-item {
+		max-width: calc((100% - (20px * 3)) / 4); /* 4 cards */
+	}
 }
 
-.delete-btn:hover {
-  background: rgba(255, 0, 100, 1);
+@media (max-width: 1024px) {
+	.recommendation-row .movie-item {
+		max-width: calc((100% - (18px * 2)) / 3); /* 3 cards */
+	}
 }
 
-/* 🧩 Confirm Modal */
-.confirm-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  backdrop-filter: blur(5px);
-  transition: opacity 0.3s ease;
+@media (max-width: 768px) {
+	.recommendation-row .movie-item {
+		max-width: calc((100% - 16px) / 2); /* 2 cards */
+	}
 }
 
-.confirm-modal.show {
-  display: flex;
-  animation: fadeIn 0.3s ease forwards;
+@media (max-width: 480px) {
+	.recommendation-row .movie-item {
+		max-width: 100%; /* 1 card per row */
+	}
 }
-
-.confirm-box {
-  background: #141414;
-  border: 1px solid #333;
-  border-radius: 14px;
-  padding: 30px 40px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 0 30px rgba(255, 0, 80, 0.4);
-  animation: zoomIn 0.3s ease;
-}
-
-.confirm-box h3 {
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-  color: #ff0048;
-}
-
-.confirm-box p {
-  color: #bbb;
-  margin-bottom: 25px;
-}
-
-.confirm-actions {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.cancel-btn,
-.confirm-btn {
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.cancel-btn {
-  background: #222;
-  color: #ddd;
-}
-
-.cancel-btn:hover {
-  background: #333;
-}
-
-.confirm-btn {
-  background: #ff0048;
-  color: #fff;
-}
-
-.confirm-btn:hover {
-  background: #ff2b6b;
-}
-
-/* Toast Notification */
-.toast {
-  visibility: hidden;
-  min-width: 280px;
-  margin-left: -140px;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  text-align: center;
-  border-radius: 8px;
-  padding: 14px;
-  position: fixed;
-  left: 50%;
-  bottom: 30px;
-  font-size: 1rem;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s, bottom 0.5s;
-}
-.toast.show {
-  visibility: visible;
-  opacity: 1;
-  bottom: 50px;
-}
-

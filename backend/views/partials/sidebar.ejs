@@ -1,46 +1,44 @@
 <div id="sidebar" class="sidebar">
-  <div class="sidebar-content">
-    <button class="close-btn" id="closeSidebar">&times;</button>
+	<div class="sidebar-content">
+		<button class="close-btn" id="closeSidebar">&times;</button>
 
-    <div class="sidebar-header">
-      <img
-        src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
-        alt="User"
-        class="sidebar-avatar"
-      />
-      <h3 class="sidebar-name"><%= user ? user.name : "Guest" %></h3>
-     
-    </div>
+		<div class="sidebar-header">
+			<img
+				src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
+				alt="User"
+				class="sidebar-avatar"
+			/>
+			<h3 class="sidebar-name"><%= user ? user.name : "Guest" %></h3>
+		</div>
 
-    <hr class="sidebar-line" />
+		<hr class="sidebar-line" />
 
-    <div class="sidebar-menu">
-      <p>👤 My Account</p>
-      <p> <a href="friends/requests">🎫 Requests</a></p>
-     <p><a href="/logout" class="signout-link">➡ Sign Out</a></p>
-
-    </div>
-  </div>
+		<div class="sidebar-menu">
+			<p><a href="/watchlist/profile">👤 My Account</a></p>
+			<p><a href="/friends/requests">🎫 Requests</a></p>
+			<p><a href="/logout" class="signout-link">➡ Sign Out</a></p>
+		</div>
+	</div>
 </div>
 
 <script>
-  const userIcon = document.querySelector(".user-icon");
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  const closeSidebar = document.getElementById("closeSidebar");
+	const userIcon = document.querySelector(".user-icon");
+	const sidebar = document.getElementById("sidebar");
+	const overlay = document.getElementById("sidebarOverlay");
+	const closeSidebar = document.getElementById("closeSidebar");
 
-  userIcon.addEventListener("click", () => {
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
+	userIcon.addEventListener("click", () => {
+		sidebar.classList.add("active");
+		overlay.classList.add("active");
+		document.body.style.overflow = "hidden";
+	});
 
-  function closeSidebarMenu() {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
+	function closeSidebarMenu() {
+		sidebar.classList.remove("active");
+		overlay.classList.remove("active");
+		document.body.style.overflow = "auto";
+	}
 
-  closeSidebar.addEventListener("click", closeSidebarMenu);
-  overlay.addEventListener("click", closeSidebarMenu);
+	closeSidebar.addEventListener("click", closeSidebarMenu);
+	overlay.addEventListener("click", closeSidebarMenu);
 </script>

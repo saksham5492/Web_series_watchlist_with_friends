@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title><%= user.name %> | Profile</title>
+		<link rel="stylesheet" href="/css/profile.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+	</head>
+
+	<body>
+		<!-- Include Navbar -->
+		<%- include('../partials/navbar') %>
+
+		<section class="profile-header container">
+			<div class="profile-cover"></div>
+			<div class="profile-info">
+				<img src="" alt="User" class="profile-pic" />
+				<div class="profile-details">
+					<h2 class="user-name"><%= user.name %></h2>
+					<p class="user-bio">Movie lover • Tech enthusiast • Dreamer</p>
+					<div class="stats">
+						<div><span>45</span> Friends</div>
+						<div><span>18</span> Watched</div>
+					</div>
+				</div>
+				<button class="btn-edit">
+					<i class="fa fa-edit"></i> Edit Profile
+				</button>
+			</div>
+		</section>
+
+		<section class="profile-tabs container">
+			<div class="tab-buttons">
+				<button class="tab-btn active" data-tab="about">About</button>
+				<button class="tab-btn" data-tab="friends">Friends</button>
+				<button class="tab-btn" data-tab="movies">Watched Movies</button>
+				<button class="tab-btn" data-tab="details">Profile Details</button>
+			</div>
+
+			<div class="tab-content active" id="about">
+				<h3>About</h3>
+				<p>
+					Hello! I'm <%= user.name %>, a passionate creator who loves tech,
+					films, and art.
+				</p>
+			</div>
+
+			<div class="tab-content" id="friends">
+				<h3>Friends</h3>
+				<div class="friend-list">
+					<div class="friend-card">
+						<img src="https://i.pravatar.cc/100?img=5" />
+						<h4>Rahul Mehta</h4>
+					</div>
+					<div class="friend-card">
+						<img src="https://i.pravatar.cc/100?img=8" />
+						<h4>Mia Johnson</h4>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-content" id="movies">
+				<h3>Watched Movies</h3>
+				<div class="movie-grid">
+					<div class="movie-card">
+						<img
+							src="https://image.tmdb.org/t/p/w300/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg"
+							alt="Inception"
+						/>
+					</div>
+					<div class="movie-card">
+						<img
+							src="https://image.tmdb.org/t/p/w300/kqjL17yufvn9OVLyXYpvtyrFfak.jpg"
+							alt="Interstellar"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-content" id="details">
+				<h3>Profile Details</h3>
+				<div class="details-grid">
+					<div class="detail-item"><span>Name:</span> <%= user.name %></div>
+					<div class="detail-item"><span>Email:</span> <%= user.email %></div>
+					<div class="detail-item"><span>Joined:</span> January 2024</div>
+				</div>
+			</div>
+		</section>
+
+		<script>
+			const tabButtons = document.querySelectorAll(".tab-btn");
+			const tabContents = document.querySelectorAll(".tab-content");
+			tabButtons.forEach((button) => {
+				button.addEventListener("click", () => {
+					tabButtons.forEach((btn) => btn.classList.remove("active"));
+					button.classList.add("active");
+					const target = button.dataset.tab;
+					tabContents.forEach((content) => {
+						content.classList.remove("active");
+						if (content.id === target) content.classList.add("active");
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

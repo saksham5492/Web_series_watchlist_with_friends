@@ -386,7 +386,7 @@ app.get("/watchlist/series/:id", (req, res) => {
 
 	const seriesQuery = `
     SELECT s.series_id, s.title, s.release_year, s.summary, s.platform,
-           s.poster_url, s.series_rating, s.trailer_url, g.genre_name
+           s.poster_url, s.series_rating, s.trailer_url, g.genre_name ,s.landscape_poster_url
     FROM series s
     JOIN series_genres sg ON s.series_id = sg.series_id
     JOIN genres g ON sg.genre_id = g.genre_id
@@ -468,6 +468,22 @@ app.get("/watchlist/series/:id", (req, res) => {
 			});
 		});
 	});
+});
+
+// ===================== PROFILE PAGE =====================
+app.get("/watchlist/profile", (req, res) => {
+	try {
+		// Example: If you have session-based auth
+		const user = req.session?.user || {
+			name: "Guest User",
+			email: "guest@example.com",
+		};
+
+		res.render("pages/profile", { user });
+	} catch (err) {
+		console.error("Error rendering profile:", err);
+		res.status(500).send("Server Error");
+	}
 });
 
 // LIVE search results API (for dropdown)
