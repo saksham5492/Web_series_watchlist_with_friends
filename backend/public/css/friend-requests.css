@@ -1,9 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
 body {
-  background-color: #141414;
+  /* Using the new background color */
+  background-color: #0a0a0a;
   color: white;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .container {
@@ -12,6 +16,7 @@ body {
   padding: 2rem 0;
 }
 
+/* --- HEADER UPDATED WITH NEW COLOR --- */
 header {
   display: flex;
   justify-content: space-between;
@@ -19,21 +24,27 @@ header {
 }
 
 h1 {
-  color: #e50914;
+  /* Using the new brand color */
+  color: #ff0048;
 }
 
 .nav-btn {
-  background-color: #e50914;
+  /* Using the new button styles */
+  background: #ff0048;
   color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
   margin-left: 0.5rem;
-  transition: 0.3s;
 }
 
 .nav-btn:hover {
-  background-color: #b00610;
+  background: #ff3369;
+  box-shadow: 0 0 15px rgba(255, 0, 72, 0.5);
 }
 
 .empty {
@@ -43,50 +54,131 @@ h1 {
   color: #aaa;
 }
 
+/* --- GRID UPDATED --- */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.5rem;
+  /* Using the new grid styles */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
   margin-top: 2rem;
+  max-width: 25%;
 }
 
+/* --- CARD UPDATED --- */
 .card {
-  background: #1f1f1f;
-  border-radius: 10px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.avatar {
-  background: #333;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  /* Using the new .friend-card styles */
+  background: linear-gradient(145deg, #1a1a1a, #101010);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255, 0, 72, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  flex-direction: column;
 }
 
+.card:hover {
+  /* Using the new hover styles */
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 0 25px rgba(255, 0, 72, 0.4);
+}
+
+/* --- AVATAR UPDATED --- */
+.avatar {
+  /* This is the circular container */
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid #ff0048;
+  box-shadow: 0 0 15px rgba(255, 0, 72, 0.5);
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+  
+  /* This is the KEY FIX: 
+     It clips the square image to the circle's shape. */
+  overflow: hidden; 
+  
+  /* Background for fallback, in case the image is broken */
+  background: #333; 
+}
+
+.avatar img {
+  /* This makes the image fill the circular container */
+  width: 100%;
+  height: 100%;
+  
+  /* This scales the image to fit, cropping instead of stretching */
+  object-fit: cover; 
+}
+.card:hover .avatar {
+  /* Using the new avatar hover */
+  transform: rotate(-5deg) scale(1.1);
+}
+
+/* --- INFO UPDATED --- */
+.info h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 5px;
+}
+.info p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* --- BUTTON UPDATED --- */
 .accept-btn {
-  background-color: #e50914;
-  border: none;
+  /* Using the new .btn styles */
+  background: #ff0048;
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-top: 0.5rem;
-  transition: 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%; /* Makes button fill the card padding */
 }
 
 .accept-btn:hover {
-  background-color: #b00610;
+  background: #ff3369;
+  box-shadow: 0 0 15px rgba(255, 0, 72, 0.5);
+}
+
+/* --- RESPONSIVE STYLES --- */
+/* (This is the responsive code from our previous chat) */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 15px;
+    width: 90%;
+  }
+  header {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  header h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  header nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .card {
+    align-items: center;
+    text-align: center;
+  }
+  .accept-btn {
+    width: 90%;
+    margin-top: 10px;
+  }
+  .empty {
+    font-size: 1rem;
+  }
 }

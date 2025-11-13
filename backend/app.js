@@ -37,7 +37,7 @@ const connection = mysql.createConnection({
 	host: "localhost",
 	user: "root",
 	database: "watchlist",
-	password: "Abcd@1234",
+	password: "MyDear3183",
 	multipleStatements: true,
 });
 
