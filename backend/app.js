@@ -43,9 +43,9 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
 	if (err) {
-		console.error("❌ Database connection failed:", err);
+		console.error(" Database connection failed:", err);
 	} else {
-		console.log("✅ Connected to MySQL database.");
+		console.log(" Connected to MySQL database.");
 	}
 });
 
@@ -69,9 +69,9 @@ app.use(async (req, res, next) => {
 	next();
 });
 
-// ---------------------------------------------------------
+
 // ROUTES
-// ---------------------------------------------------------
+
 
 // Root
 app.get("/", (req, res) => {
@@ -90,7 +90,7 @@ app.get(
 	})
 );
 
-// Register page (GET)
+// Register page (GET)  
 app.get(
 	"/watchlist/register",
 	wrapAsync(async (req, res) => {
@@ -98,7 +98,7 @@ app.get(
 	})
 );
 
-// REGISTER (POST) with OTP
+// REGISTER (POST) with OTP 
 app.post(
 	"/watchlist/register",
 	wrapAsync(async (req, res) => {
@@ -139,7 +139,7 @@ app.post(
 							pass: process.env.EMAIL_PASS,
 						},
 					});
-
+                    
 					await transporter.sendMail({
 						from: process.env.EMAIL,
 						to: email,
@@ -149,7 +149,7 @@ app.post(
                    <p>This code will expire in 10 minutes.</p>`,
 					});
 
-					console.log(`✅ OTP sent to ${email}`);
+					console.log(` OTP sent to ${email}`);
 					res.redirect(`/verify-otp?email=${encodeURIComponent(email)}`);
 				} catch (mailErr) {
 					console.error("Email sending failed:", mailErr);
@@ -169,7 +169,7 @@ app.post(
 		if (!email || !password) {
 			return res.render("pages/login", {
 				title: "Login",
-				message: "⚠️ Please fill in all fields.",
+				message: " Please fill in all fields.",
 			});
 		}
 
@@ -179,14 +179,14 @@ app.post(
 				console.error("Database error:", err);
 				return res.render("pages/login", {
 					title: "Login",
-					message: "⚠️ Server error. Try again later.",
+					message: " Server error. Try again later.",
 				});
 			}
 
 			if (results.length === 0) {
 				return res.render("pages/login", {
 					title: "Login",
-					message: "❌ No account found with this email.",
+					message: " No account found with this email.",
 				});
 			}
 
@@ -195,7 +195,7 @@ app.post(
 			if (!user.verified) {
 				return res.render("pages/login", {
 					title: "Login",
-					message: "⚠️ Please verify your email before logging in.",
+					message: " Please verify your email before logging in.",
 				});
 			}
 
@@ -203,7 +203,7 @@ app.post(
 			if (!isMatch) {
 				return res.render("pages/login", {
 					title: "Login",
-					message: "❌ Incorrect password.",
+					message: " Incorrect password.",
 				});
 			}
 
@@ -470,8 +470,8 @@ app.get("/watchlist/series/:id", (req, res) => {
 	});
 });
 
-// ===================== PROFILE PAGE =====================
-// ===================== PROFILE PAGE =====================
+//  PROFILE PAGE
+
 app.get("/watchlist/profile", async (req, res) => {
 	try {
 		const user = req.session?.user;
@@ -605,7 +605,7 @@ app.post("/watchlist/add", (req, res) => {
 				message: "❌ Server error adding to watchlist.",
 			});
 		}
-		console.log("✅ Added to watchlist!");
+		console.log(" Added to watchlist!");
 		return res.json({ success: true, message: "✅ Added to Watchlist!" });
 	});
 });
@@ -631,7 +631,7 @@ app.get("/watchlist", (req, res) => {
 
 	connection.query(query, [userId], (err, results) => {
 		if (err) {
-			console.error("❌ Error fetching watchlist:", err);
+			console.error(" Error fetching watchlist:", err);
 			return res.status(500).send("Server Error");
 		}
 		res.render("pages/watchlist", {
@@ -653,7 +653,7 @@ app.delete("/watchlist/delete/:seriesId", (req, res) => {
 
 	connection.query(q, [userId, seriesId], (err, result) => {
 		if (err) {
-			console.error("❌ Error deleting from watchlist:", err);
+			console.error(" Error deleting from watchlist:", err);
 			return res.status(500).json({ message: "Error removing series" });
 		}
 
@@ -679,7 +679,7 @@ app.get("/watchlist/friends", (req, res) => {
   `;
 	connection.query(q, [currentUserId], (err, users) => {
 		if (err) {
-			console.error("❌ Error fetching users:", err);
+			console.error(" Error fetching users:", err);
 			return res.status(500).send("Server error");
 		}
 		res.render("pages/friends", { users, user: req.session.user });
@@ -700,7 +700,7 @@ app.post("/watchlist/friends/request", (req, res) => {
   `;
 	connection.query(q, [sender_id, receiver_id], (err) => {
 		if (err) {
-			console.error("❌ Error sending friend request:", err);
+			console.error(" Error sending friend request:", err);
 			return res.status(500).json({ message: "Error sending friend request" });
 		}
 		res.json({ message: "✅ Friend request sent!" });
@@ -717,7 +717,7 @@ app.post("/watchlist/friends/accept", (req, res) => {
 	const q = `UPDATE friendships SET status = 'accepted' WHERE sender_id = ? AND receiver_id = ?`;
 	connection.query(q, [sender_id, receiver_id], (err) => {
 		if (err) {
-			console.error("❌ Error accepting friend request:", err);
+			console.error(" Error accepting friend request:", err);
 			return res.status(500).json({ message: "Server error" });
 		}
 		res.json({ message: "✅ Friend request accepted!" });
@@ -742,7 +742,7 @@ app.get("/watchlist/friends/list", (req, res) => {
 		[currentUserId, currentUserId, currentUserId],
 		(err, friends) => {
 			if (err) {
-				console.error("❌ Error fetching friends list:", err);
+				console.error(" Error fetching friends list:", err);
 				return res.status(500).send("Error fetching friends");
 			}
 			res.render("pages/friends-list", { friends, user: req.session.user });
@@ -769,11 +769,11 @@ app.get("/watchlist/friends/watchlist/:friendId", (req, res) => {
 		[userId, friendId, friendId, userId],
 		(err, friendsRes) => {
 			if (err) {
-				console.error("❌ Error verifying friendship:", err);
+				console.error(" Error verifying friendship:", err);
 				return res.status(500).send("Server Error");
 			}
 			if (friendsRes.length === 0) {
-				return res.status(403).send("⚠️ You are not friends with this user.");
+				return res.status(403).send(" You are not friends with this user.");
 			}
 
 			// fetch friend's watchlist
@@ -792,7 +792,7 @@ app.get("/watchlist/friends/watchlist/:friendId", (req, res) => {
 
 			connection.query(q, [friendId], (err2, results) => {
 				if (err2) {
-					console.error("❌ Error fetching friend's watchlist:", err2);
+					console.error(" Error fetching friend's watchlist:", err2);
 					return res.status(500).send("Server Error");
 				}
 
@@ -833,7 +833,7 @@ app.get("/watchlist/friends/requests", (req, res) => {
 
 	connection.query(q, [currentUserId], (err, requests) => {
 		if (err) {
-			console.error("❌ Error fetching requests:", err);
+			console.error(" Error fetching requests:", err);
 			return res.status(500).send("Error fetching requests");
 		}
 		res.render("pages/friend-requests", { requests, user: req.session.user });
@@ -860,7 +860,7 @@ app.delete("/watchlist/friends/remove/:friendId", (req, res) => {
 		[currentUserId, friendId, friendId, currentUserId],
 		(err, result) => {
 			if (err) {
-				console.error("❌ Error removing friend:", err);
+				console.error(" Error removing friend:", err);
 				return res.status(500).json({ message: "Error removing friend" });
 			}
 
@@ -869,7 +869,7 @@ app.delete("/watchlist/friends/remove/:friendId", (req, res) => {
 			}
 
 			console.log(
-				`✅ Friendship removed between ${currentUserId} and ${friendId}`
+				` Friendship removed between ${currentUserId} and ${friendId}`
 			);
 			res.json({ success: true, message: "✅ Friend removed successfully." });
 		}
